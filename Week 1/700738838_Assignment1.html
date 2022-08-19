@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        #surveyForm {
+            margin: auto;
+            width: 500px;
+            border-radius: 5px;
+            background-color: #b44bda;
+            padding: 20px;
+        }
+        #formBody {
+            border-radius: 5px;
+            background-color: #fefefe;
+            padding: 20px;
+        }
+    </style>
+
+    <body>
+        <div id="surveyForm">
+            <form action="" method="post" target="_blank">
+                <h1 id='formHeader'style="font-weight: bold; text-align: center;">CS 5130 Survey Form</h1>
+                
+                <div id="formBody">
+                    <label for="name">Name</label><br>
+                    <input type="text" id="name" name="name" style="width:100%"><br><br>
+
+                    <label for="email">Email</label><br>
+                    <input type="email" id="email" name="email" style="width:100%"><br><br>
+
+                    <label for="age">Age</label><br>
+                    <input type="number" id="age" name="age" min='0' max="150" style="width:100%"><br><br>
+                    
+                    <label for="favoriteide">Your favorite IDE?</label><br>
+                    <select id="favoriteide" name="cars" style="width:100%">
+                        <option value="volvo">Visual Studio Code</option>
+                        <option value="saab">Atom</option>
+                        <option value="fiat">Eclipse</option>
+                        <option value="audi">Other</option>
+                    </select><br><br>
+
+                    <label for="summer_rating">How was your summer?</label><br>
+                    <input type="radio" id="summer_rating1" name="summer_rating" value="Fantastic" checked>
+                    <label for="summer_rating1">Fantastic</label><br>
+                    <input type="radio" id="summer_rating2" name="summer_rating" value="Barely Survived">
+                    <label for="summer_rating3">Barely Survived</label><br>
+                    <input type="radio" id="summer_rating3" name="summer_rating" value="Can't remember">
+                    <label for="summer_rating3">Can't remember</label><br>
+                    <input type="radio" id="summer_rating4" name="summer_rating" value="so-So">
+                    <label for="summer_rating4">So-So</label><br><br>
+
+                    <label for="lang_known">Languages and Frameworks known (Check all that apply)</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="C">
+                    <label for="lang_known1">C</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="C++">
+                    <label for="lang_known2">C++</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="C#" checked>
+                    <label for="lang_known3">C#</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="Java" checked>
+                    <label for="lang_known4">Java</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="Python">
+                    <label for="lang_known5">Python</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="Javascript">
+                    <label for="lang_known6">Javascript</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="React">
+                    <label for="lang_known7">React</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="Angular">
+                    <label for="lang_known8">Angular</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="Django">
+                    <label for="lang_known9">Django</label><br>
+                    <input type="checkbox" id="lang_known1" name="lang_known" value="Spring">
+                    <label for="lang_known10">Spring</label><br><br>
+
+                    <label for="comments">Any comments or suggestions</label><br>
+                    <textarea id="comments" name="comments" rows="3" cols="50" style="width:100%">Yeah!</textarea><br><br>
+                    
+                    <input style="width:100%; background-color: #4CAF50; color: black;border: none; padding: 14px 20px;" type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
