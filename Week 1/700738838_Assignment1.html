@@ -6,7 +6,7 @@
             width: 500px;
             border-radius: 5px;
             background-color: #b44bda;
-            padding: 20px;
+            padding: 10px;
         }
         #formBody {
             border-radius: 5px;
@@ -14,10 +14,9 @@
             padding: 20px;
         }
     </style>
-
     <body>
         <div id="surveyForm">
-            <form action="" method="post" target="_blank">
+            <form action="" method="post" onsubmit="handleSubmit()">
                 <h1 id='formHeader'style="font-weight: bold; text-align: center;">CS 5130 Survey Form</h1>
                 
                 <div id="formBody">
@@ -32,10 +31,10 @@
                     
                     <label for="favoriteide">Your favorite IDE?</label><br>
                     <select id="favoriteide" name="cars" style="width:100%">
-                        <option value="volvo">Visual Studio Code</option>
-                        <option value="saab">Atom</option>
-                        <option value="fiat">Eclipse</option>
-                        <option value="audi">Other</option>
+                        <option value="Visual Studio Code">Visual Studio Code</option>
+                        <option value="Atom">Atom</option>
+                        <option value="Eclipse">Eclipse</option>
+                        <option value="Other">Other</option>
                     </select><br><br>
 
                     <label for="summer_rating">How was your summer?</label><br>
@@ -77,5 +76,12 @@
                 </div>
             </form>
         </div>
+
+        <script>
+            function handleSubmit() {
+                text = 'Thank you '+ document.getElementById('name').value + ', the form is submitted';
+                alert(text);
+            }
+        </script>
     </body>
 </html>
