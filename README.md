@@ -3,7 +3,7 @@
 ---
 This repository is to the track course work of Advance Web Application & Services Development Subject
 
-- [Week 1 Activity](https://sasank09.github.io/CS5130_13892/Week 1/700738838_Assignment1.html)
+- [Week 1 Activity](https://sasank09.github.io/CS5130_13892/Week%20%1/700738838_Assignment1.html)
 - [Home Work 1 - Click Here](https://sasank09.github.io/CS5130_13892/HW1/SalesTaxCalculator.html)
 
 ---
