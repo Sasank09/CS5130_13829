@@ -1,5 +1,5 @@
 # Advance Web Application & Services Development
-### Course Info: CS 5310 & CRN 13892
+### Course Info: CS 5130 & CRN 13829
 ---
 This repository is to the track course work of Advance Web Application & Services Development Subject
 
