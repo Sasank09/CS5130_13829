@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grade Converter</title>
+</head>
+
+<body>
+    <main>
+        <h1>Show letter grade</h1>
+        <p id="result"></p>
+        <script>
+            "use strict";
+            let numberGrade = 0;
+            let letterGrade = "";
+            var test_score;
+            var grade;
+            var getScore = function () {
+                test_score = prompt("Enter number grade from 0 through 100");
+            }
+            var getGrade = function () {
+                if (test_score >= 88 && test_score <= 100) {
+                    grade = "A";
+                } else if (test_score >= 80 && test_score <= 87) {
+                    grade = "B";
+                } else if (test_score >= 68 && test_score <= 79) {
+                    grade = "C";
+                } else if (test_score >= 60 && test_score <= 67) {
+                    grade = "D";
+                }
+                else if (test_score < 60) {
+                    grade = "F";
+                }
+            }
+
+            var displayGrade = function () {
+                if (test_score >= 0 && test_score <= 100) {
+                    document.getElementById("result").innerText = "Grade " + test_score + " = " + grade;
+                }
+            }
+
+            do {
+                getScore()
+            } while (isNaN(test_score) || test_score == '' || (test_score < 0 || test_score > 100))
+
+            getGrade()
+            displayGrade()
+
+        </script>
+    </main>
+</body>
+
+</html>
