@@ -7,7 +7,6 @@ var $qsa = (classSelector) => document.querySelectorAll(classSelector);
 
 function onLoadingIndexPage() {
     loginFormHandler();
-
 }
 
 function loginFormHandler() {
@@ -18,9 +17,7 @@ function loginFormHandler() {
     let switchBtn = $qsa(".switch-btn");
     let aContainer = $qs("#a-container");
     let bContainer = $qs("#b-container");
-
     let changeForm = (e) => {
-
         switchCtn.classList.add("is-gx");
         setTimeout(function () {
             switchCtn.classList.remove("is-gx");

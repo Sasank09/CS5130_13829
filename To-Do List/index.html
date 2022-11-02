@@ -23,69 +23,75 @@
     <script src="js/todo_list.js"></script>
 </head>
 
-<body>
-    <div class="index_main_body" onload="onLoadingIndexPage()" >
+<body onload="onLoadingIndexPage()">
+    <div class="index_main_body">
         <!-- Navbar (sit on top) -->
         <div class="w3-top" style="z-index: 1000;">
-            <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
-                <a href="#home" class="w3-bar-item w3-button" onblur="window.location.reload()">To-List Home</a>
-                <!-- Right-sided navbar links. Hide them on small screens -->
-                <div class="w3-right w3-hide-small">
-                    <a href="#about" class="w3-bar-item w3-button" onblur="window.location.reload()">About</a>
-                    <a href="#loginForm" class="w3-bar-item w3-button">Login/Register</a>
-                    <a href="#team" class="w3-bar-item w3-button">Team</a>
-                </div>
+            <div class="w3-row w3-padding w3-white w3-left-align" style="letter-spacing:2px;">
+              <div class="w3-col s3" >
+                <a href="#about" class="w3-button w3-block w3-white" onblur="window.location.reload()">To-List Home</a>
+              </div>
+              <div class="w3-col s3">
+                <a href="#about" class="w3-button w3-block w3-white" onblur="window.location.reload()">About</a>
+              </div>
+              <div class="w3-col s3">
+                <a href="#loginForm" class="w3-button w3-block w3-white">Login/Register</a>
+              </div>
+              <div class="w3-col s3">
+                <a href="#team" class="w3-button w3-block w3-white">Team</a>
+              </div>
             </div>
-        </div>
+          </div>
 
         <!-- Page content -->
-        <div class="w3-content" style="max-width:100%">
+        <div class="w3-content" style="max-width: 100%">
             <!-- About Section -->
             <div class="w3-row w3-padding-64 w3-padding-large" id="about">
                 <div class="w3-col m6 w3-padding-large w3-hide-small">
                     <img src="images/todo.jpg" class="w3-round w3-image w3-opacity-min fade-in" alt="To Do" width="100%"
-                        height="auto">
+                        height="auto" />
                 </div>
                 <div class="w3-col m6 w3-padding-large">
-                    <h1 class="w3-right typewriter w3-hover-text-brown" style="text-shadow: 2px 2px 5px red;">About
-                        To-Do
-                        List.</h1><br>
-                    <hr>
-                    <p class="w3-large" style="justify-content:center ;">In our daily busy life, one always has many
-                        things/tasks/short-term goals to accomplish on a day.
-                        And sometimes people forget to do things that are important and get frustrates not being able to
-                        complete
-                        them as the day goes forgetting them. In Business area, other people will have to chase you to
-                        get
-                        things done
-                        while struggling to keep up to deadlines because of heavy workload. Traditionally, we write in
-                        notes/ diary
-                        to keep track of them, but as the technology advanced, we are going to utilize the web
-                        application.
-                        To-Do
-                        List web app is for general daily usage and the main aim of this application is to create goals/
-                        tasks so that
-                        user can track and complete them by specified point of time. The end users can manage their
-                        day-to-day tasks
-                        or things that must be completed in a day in much more organized way by prioritizing them. With
-                        to-do list,
-                        users will get clear outline of tasks to be completed or important for the day and able to work
-                        on
-                        the tasks
-                        that are important and leave less prioritized one to little later if time is not sufficient.
-                        Users
-                        can mark the
-                        tasks completed and able to move onto next one orderly. With the help of this app, user will be
-                        more
-                        effective
-                        by completing all the important things and tracking the next goals/ tasks on a day.</p>
+                    <h1 class="w3-right w3-text-black typewriter w3-hover-text-brown w3-hide-small w3-hide-medium"
+                        style="text-shadow: 2px 2px 5px red">
+                        About To-Do List.
+                    </h1>
+                    <h1 class="w3-right w3-text-black typewriter w3-hover-text-brown w3-hide-large"
+                        style="text-shadow: 2px 2px 5px red">
+                        About.
+                    </h1>
+                    <br />
+                    <hr />
+                    <p class="w3-large w3-justify">
+                        In our daily busy life, one always has many
+                        things/tasks/short-term goals to accomplish on a day. And
+                        sometimes people forget to do things that are important and get
+                        frustrates not being able to complete them as the day goes
+                        forgetting them. In Business area, other people will have to chase
+                        you to get things done while struggling to keep up to deadlines
+                        because of heavy workload. Traditionally, we write in notes/ diary
+                        to keep track of them, but as the technology advanced, we are
+                        going to utilize the web application. To-Do List web app is for
+                        general daily usage and the main aim of this application is to
+                        create goals/ tasks so that user can track and complete them by
+                        specified point of time. The end users can manage their day-to-day
+                        tasks or things that must be completed in a day in much more
+                        organized way by prioritizing them. With to-do list, users will
+                        get clear outline of tasks to be completed or important for the
+                        day and able to work on the tasks that are important and leave
+                        less prioritized one to little later if time is not sufficient.
+                        Users can mark the tasks completed and able to move onto next one
+                        orderly. With the help of this app, user will be more effective by
+                        completing all the important things and tracking the next goals/
+                        tasks on a day.
+                    </p>
                 </div>
             </div>
-            <hr>
+            <hr />
         </div>
 
         <!-- Login Section -->
-        <div class="w3-content w3-padding-64 w3-center" id="loginForm">
+        <div class="w3-content w3-row w3-padding-64 w3-center" id="loginForm">
             <div class="main">
                 <div class="container a-container" id="a-container">
                     <form class="form" id="a-form" method="" action="">
@@ -126,21 +132,22 @@
             </div>
         </div>
         <hr>
+        <!--Team Section-->
         <div class="w3-content" style="max-width:100%">
             <div class="w3-row w3-padding-64" style="  margin: auto;width: 50%;" id="team">
                 <div class="w3-col w3-padding-large">
-                    <h1 class="w3-center">Development Team</h1><br>
+                    <h3 class="w3-center">Development Team</h3><br>
                     <h4 class="w3-center">Advanced Web Applications & Services Development</h4>
                     <hr>
 
                     <h4>Professor: Dr. Sung</h4>
-                    <p class="w3-text-grey">CS5130 - CRN 13892</p><br>
+                    <p class="w3-text-dark-grey">CS5130 - CRN 13892</p><br>
 
-                    <h4>Venkata Lakshmi Sasank Tipparaju</h4>
-                    <p class="w3-text-grey">Student ID# 700738838</p><br>
+                    <h4>1. Venkata Lakshmi Sasank Tipparaju</h4>
+                    <p class="w3-text-dark-grey">Student ID# 700738838</p><br>
 
-                    <h4>Jaya Chandu</h4>
-                    <p class="w3-text-grey">Student ID#700738838/p><br>
+                    <h4>2. Jaya Chandu</h4>
+                    <p class="w3-text-dark-grey">Student ID#700738838/p><br>
                 </div>
             </div>
             <hr><br>
