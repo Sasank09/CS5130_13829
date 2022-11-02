@@ -1,0 +1,50 @@
+CREATE DATABASE attendance;
+USE attendance;
+
+CREATE TABLE students( 
+  name VARCHAR(128), 
+  present tinyint(1)
+);
+
+INSERT INTO students (name, present) VALUES ('Kumar', 1);
+INSERT INTO students (name, present) VALUES ('Reddy', 1);
+INSERT INTO students (name, present) VALUES ('Ajay', 1);
+INSERT INTO students (name, present) VALUES ('Sandeep', 1);
+INSERT INTO students (name, present) VALUES ('Ruchitha', 1);
+INSERT INTO students (name, present) VALUES ('Raju', 1);
+INSERT INTO students (name, present) VALUES ('Divya', 1);
+INSERT INTO students (name, present) VALUES ('Priyanka', 1);
+INSERT INTO students (name, present) VALUES ('Teja', 1);
+INSERT INTO students (name, present) VALUES ('Priya', 1);
+INSERT INTO students (name, present) VALUES ('Kishore', 1);
+INSERT INTO students (name, present) VALUES ('Yaamini', 1);
+INSERT INTO students (name, present) VALUES ('Uday', 1);
+INSERT INTO students (name, present) VALUES ('Arun', 1);
+INSERT INTO students (name, present) VALUES ('Mounika', 1);
+INSERT INTO students (name, present) VALUES ('Deepa', 1);
+INSERT INTO students (name, present) VALUES ('Deepika', 1);
+INSERT INTO students (name, present) VALUES ('Hema', 1);
+INSERT INTO students (name, present) VALUES ('Hima', 1);
+INSERT INTO students (name, present) VALUES ('Chanakya', 1);
+INSERT INTO students (name, present) VALUES ('Ashok', 1);
+INSERT INTO students (name, present) VALUES ('Vamsi', 1);
+INSERT INTO students (name, present) VALUES ('Akhil', 1);
+INSERT INTO students (name, present) VALUES ('Leela', 1);
+INSERT INTO students (name, present) VALUES ('Manideep', 1);
+INSERT INTO students (name, present) VALUES ('Mohan', 1);
+INSERT INTO students (name, present) VALUES ('Rohini', 1);
+INSERT INTO students (name, present) VALUES ('Lakshmi', 1);
+INSERT INTO students (name, present) VALUES ('Renna', 1);
+INSERT INTO students (name, present) VALUES ('Lekhna', 1);
+INSERT INTO students (name, present) VALUES ('Pavani', 1);
+INSERT INTO students (name, present) VALUES ('Shiva', 1);
+
+CREATE TABLE logins( 
+  names VARCHAR(128), 
+  email VARCHAR(128), 
+  password VARCHAR(128)
+);
+
+INSERT INTO logins (names, email, password) VALUES ('Admin', 'php@ucmo.edu', '1234abc');
+INSERT INTO logins (names, email, password) VALUES ('Joel', 'sung@ucmo.edu', 'abc1234');
+INSERT INTO logins (names, email, password) VALUES ('Josh', 'josh@ucmo.edu', 'ababab');

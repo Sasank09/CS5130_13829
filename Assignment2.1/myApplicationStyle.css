@@ -1,0 +1,91 @@
+body {
+    margin: 0.1em 1em 0.2em 1em;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+form i {
+    margin-left: -25px;
+    cursor: pointer;
+}
+
+main.classroomApplication {
+    margin: auto;
+    width: 62em;
+    border: 8px solid white;
+    border-top-color: lightgray;
+}
+
+.classroomApplicationBoard {
+    background-color: white;
+    border: 4px solid blue;
+}
+
+#heading {
+    color: black;
+    text-align: center;
+}
+
+#screensContainer {
+    margin-left: 3em;
+    margin-right: 2em;
+    clear: both;
+    display: table;
+}
+
+#whiteboard {
+    margin-top: 1.5em;
+    padding: 1px;
+    float: left;
+}
+
+#tvScreen {
+    float: left;
+    padding: 0em 0.5em 0em 0.5em;
+}
+
+.studentCoontainer {
+    margin: 3em 0.4em 0.2em 2em;
+    width: 60em;
+    display: grid;
+    grid-template-columns: 1fr 0.2fr 1fr;
+}
+
+div.left_grid_container {
+    width: 22em;
+    height: auto;
+    display: grid;
+    grid-template-columns: 4em 4em 4em 4em;
+    grid-template-rows: 4em 4em 4em 4em;
+    row-gap: 0.8em;
+    column-gap: 2em;
+}
+
+div.right_grid_container {
+    width: 22em;
+    height: auto;
+    display: grid;
+    grid-template-columns: 4em 4em 4em 4em;
+    grid-template-rows: 4em 4em 4em 4em;
+    row-gap: 0.8em;
+    column-gap: 2em;
+}
+
+div.grid_element {
+    width: 4.5em;
+    height: 3em;
+    text-align: center;
+    padding: 0.8em 0.3em 0em 0.3em;
+    border: 4px solid green;
+    background-color: lightgray;
+}
+
+div.grid_element:hover {
+    cursor: pointer;
+}
+
+.result {
+    font-size: 120%;
+    padding: 1em 0.3em 0.3em 0.3em;
+    text-align: center;
+}
