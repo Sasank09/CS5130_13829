@@ -20,8 +20,15 @@
     background: linear-gradient(to right, #f37099, #84d3ed);
 }
 
+h1,
+h2,
+h3 {
+    font-family: "Playfair Display";
+    letter-spacing: 3px;
+}
+
 /*Responsive Login Form CSS*/
-.main  {
+.main {
     position: relative;
     width: 1000px;
     min-width: 1000px;
@@ -35,21 +42,21 @@
 
 @media (max-width: 1200px) {
     .main {
-        transform: scale(0.7);
+        transform: scale(0.8);
     }
 }
 
 @media (max-width: 1000px) {
     .main {
         left: -30px;
-        transform: scale(0.6);
+        transform: scale(0.7);
     }
 }
 
 @media (max-width: 800px) {
     .main {
         left: -200px;
-        transform: scale(0.5);
+        transform: scale(0.6);
     }
 }
 
@@ -73,13 +80,14 @@
         transform: scale(0.25);
     }
 }
+
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
     top: 0;
-    left:0;
+    left: 0;
     width: 600px;
     height: 100%;
     padding: 25px;
@@ -113,21 +121,50 @@
 }
 
 .form__input:focus {
-    box-shadow: inset 4px 4px 4px #d1d9e6, inset -4px -4px 4px #f9f9f9;
+    box-shadow: inset 4px 4px 4px #d1d9e6, inset -4px -4px 4px #e6eebb;
+}
+
+label.error {
+    color: red;
+    font-size: 1rem;
+    display: block;
+    margin-top: 5px;
+}
+
+input.error{
+    border: 1px dashed red;
+    font-weight: 300;
+    color: red;
+}
+
+label.error.fail-alert {
+    margin: 2px 2px 2px 20px;
+    border: 2px solid red;
+    border-radius: 4px;
+    line-height: 1;
+    padding: 4px 0 6px 6px;
+    background: #ffe6eb;
+    text-align: left;
+}
+
+input.valid.success-alert {
+    border: 2px solid #4CAF50;
+    color: green;
 }
 
 .title {
     font-size: 34px;
     font-weight: 700;
     line-height: 3;
-    color: #5FC3E4;
+    color: #1f245a;
 }
 
 .description {
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.25px;
     text-align: center;
     line-height: 1.6;
+    color: #1f245a;
 }
 
 .button {
@@ -138,11 +175,15 @@
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 1.15px;
-    background-color: #5FC3E4;
+    background: linear-gradient(to right, #ac6deb, #7676dd);
     color: #f9f9f9;
     box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #f9f9f9;
     border: none;
     outline: none;
+}
+
+.button:hover {
+    background: linear-gradient(to right, #7676dd, #ac6deb);
 }
 
 .a-container {
@@ -261,68 +302,155 @@
     }
 }
 
-h1,
-h2,
-h3 {
-    font-family: "Playfair Display";
-    letter-spacing: 5px;
-}
-
 /*Type Writer CSS*/
-.typewriter  {
+.typewriter {
     color: #fff;
     font-family: monospace;
-    overflow: hidden; /* Ensures the content is not revealed until the animation */
-    border-right: .15em solid orange; /* The typwriter cursor */
-    white-space: nowrap; /* Keeps the content on a single line */
-    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-    letter-spacing: .15em; /* Adjust as needed */
-    animation: 
-      typing 3.5s steps(30, end),
-      blink-caret .5s step-end infinite;
-  }
-  
-  /* The typing effect */
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-  }
-  
-  /* The typewriter cursor effect */
-  @keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: orange }
-  }
+    overflow: hidden;
+    /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid orange;
+    /* The typwriter cursor */
+    white-space: nowrap;
+    /* Keeps the content on a single line */
+    margin: 0 auto;
+    /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .15em;
+    /* Adjust as needed */
+    animation:
+        typing 3.5s steps(30, end),
+        blink-caret .5s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: orange
+    }
+}
 
 /*Fade in CSS*/
-  .fade-in {
+.fade-in {
     animation: fadeIn ease 10s;
     -webkit-animation: fadeIn ease 10s;
     -moz-animation: fadeIn ease 10s;
     -o-animation: fadeIn ease 10s;
     -ms-animation: fadeIn ease 10s;
-  }
-  @keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
-  }
-  
-  @-moz-keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
-  }
-  
-  @-webkit-keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
-  }
-  
-  @-o-keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
-  }
-  
-  @-ms-keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
-  }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+/**http://www.menucool.com/9499/CSS-loading-spinner-with-a-semi-transparent-background*/
+#cover-spin {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 9999;
+    display: none;
+}
+
+@-webkit-keyframes spin {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#cover-spin::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 48%;
+    top: 40%;
+    width: 40px;
+    height: 40px;
+    border-style: solid;
+    border-color: black;
+    border-top-color: transparent;
+    border-width: 4px;
+    border-radius: 50%;
+    -webkit-animation: spin .8s linear infinite;
+    animation: spin .8s linear infinite;
+}

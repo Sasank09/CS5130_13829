@@ -1,18 +1,35 @@
-        <!-- Menu Section -->
-        <div class="w3-row w3-padding-64" id="team">
-            <div class="w3-col l6 w3-padding-large">
-                <h1 class="w3-center">Development Team</h1><br>
-                <h4>Advanced Web Applications & Services Development</h4> <hr>
+<?php
+require_once "pdo.php";
 
-                <h4>Professor</h4>
-                <p class="w3-text-grey">Dr. Sung</p><br>
+const DB_HOST = 'localhost';
+const DB_PORT = 3306;
+const DB_NAME = 'todo_list';
+const DB_USER = 'php';
+const DB_PASSWORD = 'phpdb';
+const USER_LOGIN_ERROR = "Invalid Username or Passwords";
+const INDEX_PAGE_LOCATION = 'Location: http://localhost/To-Do%20List/';
+const INDEX_LOGIN_PAGE_LOCATION = 'Location: http://localhost/To-Do%20List/index.php#loginForm';
+const ALL_TODO_LIST_PHP_LOCATION = 'Location: http://localhost/To-Do%20List/controller/all_todos.php';
+const REGISTRATION_PHP_LOCATION = 'Location: http://localhost/To-Do%20List/controller/register.php';
+const LOGIN_PHP_LOCATION = 'Location: http://localhost/To-Do%20List/controller/login.php';
 
-                <h4>Venkata Lakshmi Sasank</h4>
-                <p class="w3-text-grey">Student ID# 700738838</p><br>
 
-                <h4>Jaya Chandu</h4>
-                <p class="w3-text-grey">Scrambled eggs, roasted red pepper and garlic, with green onions 7.50</p><br>
+function executeQuery($sql, $binded_params, $fetchMode)
+{
+    $pdo = dbConnection();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($binded_params);
 
-                <h4>Blueberry Pancakes</h4>
-            </div>
-        </div>
+    if ($fetchMode == "NONE") {
+        return true;
+    } elseif ($fetchMode == "ONE") {
+        $row = $stmt->fetch();
+        return $row;
+    } elseif ($fetchMode == "ALL") {
+        $rows = $stmt->fetchAll();
+        return $rows;
+    }
+    else {
+        return false;
+    }
+}
