@@ -4,7 +4,8 @@
 This repository is to the track course work of Advance Web Application & Services Development Subject
 
 [`To view in Github Page`](https://sasank09.github.io/CS5130_13829/)
-- [Week 1 Activity](https://sasank09.github.io/CS5130_13829/Week%201/700738838_Assignment1.html)
+- [Week 1 Activity](https://sasank09.github.io/CS5130_13829/01Week/700738838_Assignment1.html)
+- [Week 2 Activity](https://sasank09.github.io/CS5130_13829/02WeekActivity/700738838_Assignment1.html)
 - [Home Work 1 - Click Here](https://sasank09.github.io/CS5130_13829/HW1/SalesTaxCalculator.html)
 - [Home Work 2 - Click Here](https://sasank09.github.io/CS5130_13829/HW2/FAQs.html)
 - In Class Activity
