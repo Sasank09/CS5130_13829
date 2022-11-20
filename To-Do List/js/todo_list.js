@@ -1,88 +1,111 @@
 "use strict";
-
 var $ele = (id) => document.getElementById(id);
 var $qs = (classSelector) => document.querySelector(classSelector);
 var $qsa = (classSelector) => document.querySelectorAll(classSelector);
+var reg_email_err = false;
+/**
+ * Function to sanitizeHTML data before displaying it to the user
+ * @param {string} text - HTML/any response string to sanitize before displaying
+ */
+function sanitizeHTML(text) {
+    return $('<div>').text(text).html();
+}
+
+/**
+ * Function to display and hide the spinner with the parameter to set the timeout
+ * @param {Number} timeout - time to display and hide the spinner
+ */
+function toggleSpinner(timeout) {
+    $("#cover-spin").show();
+    setTimeout(() => {
+        $("#cover-spin").hide();
+    }, timeout);
+}
 
 
+/**
+ * @param {String} togId - the element id of the eye icon on which the user clicks
+ * @param {String} passId - html element id of the password to be displayed as text / as password
+ * Function to toggle the password visibility by clicking on icon
+ */
+function togglePasswordVisibility(togId, passId) {
+    const type = $ele(passId).getAttribute("type") === "password" ? "text" : "password";
+    $ele(passId).setAttribute("type", type);
+    $ele(togId).classList.toggle("fa-eye");
+}
+
+// function to handle on loading of index.php page
 function onLoadingIndexPage() {
     loginFormHandler();
 }
 
+//Function to handle the toggle of Login form and Registration form and validatiion
 function loginFormHandler() {
-    toggleSpinner();
-    let switchCtn = $qs("#switch-cnt");
-    let switchC1 = $qs("#switch-c1");
-    let switchC2 = $qs("#switch-c2");
-    let switchCircle = $qsa(".switch__circle");
+    // getting all the buttons used in login/register form and containers to toggle
     let switchBtn = $qsa(".switch-btn");
-    let aContainer = $qs("#a-container");
-    let bContainer = $qs("#b-container");
+
     let changeForm = (e) => {
-        switchCtn.classList.add("is-gx");
+        $("#switch-cnt").addClass("is-gx");
+        toggleSpinner(500);
         setTimeout(function () {
-            switchCtn.classList.remove("is-gx");
+            $("#switch-cnt").removeClass("is-gx");
         }, 1500)
 
-        switchCtn.classList.toggle("is-txr");
-        switchCircle[0].classList.toggle("is-txr");
-        switchCircle[1].classList.toggle("is-txr");
+        $("#switch-cnt").toggleClass("is-txr");
+        $("#switch__circle").toggleClass("is-txr");
 
-        switchC1.classList.toggle("is-hidden");
-        switchC2.classList.toggle("is-hidden");
-        aContainer.classList.toggle("is-txl");
-        bContainer.classList.toggle("is-txl");
-        bContainer.classList.toggle("is-z200");
+        $("#switch-c1, #switch-c2").toggleClass("is-hidden");
+        $("#a-container, #b-container").toggleClass("is-txl");
+        $("#b-container").toggleClass("is-z200");
     }
+    // toggle event listeners to sqi
     let toggleForm = (e) => {
         for (var i = 0; i < switchBtn.length; i++)
             switchBtn[i].addEventListener("click", changeForm)
     }
     toggleForm();
-    checkUserNameAvailability();
     validateRegistrationForm();
+    checkUserMailAvailability();
+    validateLoginForm();
+
 }
 
-function checkUserNameAvailability() {
+//Function to check asynchronously email availability status from MySQL Database before registration
+function checkUserMailAvailability() {
     $(document).ready(function () {
-        $("#mail").keyup(function (e) {
-            jQuery.ajax({
-                url: "controller/check_user.php",
-                data: "email=" + $("#mail").val(),
-                type: "post",
-                success: function (data) {
-                    $("#user-availability-status").html(data);
-                    console.log("data", data);
-                },
-                error: function () { }
-            });
+        $("#mail").focusout(function (e) {
+            if ($("#mail").val()) {
+                const url = '//' + location.host + '/To-Do%20List/controller/check_user.php?email=' + $("#mail").val();
+                $.getJSON(url, function (data) {
+                    console.log(reg_email_err)
+                    if (data.status === 0) {
+                        $("#user-availability-status").html(
+                            "<span style='color:red; font-weight:bold'>" + sanitizeHTML(data.message) + "</span>"
+                        );
+                        $("#mail").addClass("error");
+                        reg_email_err = true;
+                    }
+                    else if (data.status === 1) {
+                        $("#user-availability-status").html(
+                            "<span class='w3-text-green w3-center' style='font-weight:bold'>" + sanitizeHTML(data.message) + "</span>"
+                        );
+                        $("#mail").removeClass("error");
+                        reg_email_err = false;
+                    }
+                });
+            }
+            else {
+                $("#user-availability-status").html('');
+            }
         });
     });
 
 }
 
-function toggleSpinner() {
-    $(document).ready(function () {
-        $("#cover-spinner").show();
-        setTimeout(() => {
-            $("#cover-spinner").hide();
-        }, 2000);
-    });
-}
-
-
-function togglePasswordVisibility(togId, passId) {
-    const type = $ele(passId).getAttribute("type") === "password" ? "text" : "password";
-    $ele(passId).setAttribute("type", type);
-    // toggle the icon
-    $ele(togId).classList.toggle("fa-eye");
-}
-
+//Function to validate registration form on submiting/onchange using jQuery Validation library methods.
 function validateRegistrationForm() {
     $(document).ready(function () {
         $("#registration-form").validate({
-            errorClass: "error fail-alert",
-            validClass: "valid success-alert",
             rules:
             {
                 fullname: {
@@ -92,12 +115,13 @@ function validateRegistrationForm() {
                 mail: {
                     required: true,
                     email: true,
-                    pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,3})+$/
+                    pattern: /^\w+([\.-]?\w+)*@\w+(\.\w{1,})+$/,
                 },
                 pass: {
                     required: true,
                     minlength: 8,
                     maxlength: 15,
+                    pattern: /^^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,15}$/
                 },
                 retype_pass: {
                     required: true,
@@ -107,26 +131,61 @@ function validateRegistrationForm() {
             messages:
             {
                 fullname: {
-                    required: "Full Name is Required",
-                    minlength: "Full Name must be at least 3 characters",
+                    required: "Full name is required.",
                 },
-                email: {
-                    required: "Email is Required",
-                    email: "Enter a valid email address",
-                    pattern: "Please Enter a Valid Email Address",
+                mail: {
+                    required: "Email is required.",
+                    email: "Enter a valid email address.",
+                    pattern: "Enter a valid email address.",
                 },
                 pass: {
-                    required: "Please Provide a Password",
-                    minlength: "password at least have 8 characters"
+                    required: "Password is required",
+                    pattern: "Must contain atleast 1 aphabet, 1 digit & 1 spl. character"
                 },
                 retype_pass: {
-                    required: "Please Retype Your Password",
-                    equalTo: "Password Doesn't Match!"
+                    required: "Please retype your password...",
+                    equalTo: "Password doesn't match!"
                 }
             },
             submitHandler: function (form) {
+                toggleSpinner(1000);
+                if (!reg_email_err) {
+                    form.submit();
+                }
+                else {
+                    $("#mail").addClass("error");
+                }
+            }
+        });
+    });
+}
+
+//Function to validate login form on submiting/onchange using jQuery Validation library methods.
+function validateLoginForm() {
+    $(document).ready(function () {
+        $("#login-form").validate({
+            rules:
+            {
+                email: {
+                    required: true,
+                },
+                passwd: {
+                    required: true,
+                },
+            },
+            messages:
+            {
+                email: {
+                    required: "Email is required.",
+                },
+                passwd: {
+                    required: "Password is required",
+                },
+            },
+            submitHandler: function (form) {
+                toggleSpinner(1000);
                 form.submit();
             }
         });
-    })
+    });
 }

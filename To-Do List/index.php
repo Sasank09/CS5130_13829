@@ -1,3 +1,14 @@
+<?php
+require_once "includes/utility.php";
+session_start();
+$loginmessage = "";
+if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
+    $loginmessage = "Invalid Credentials, Please try again.";
+    unset($_SESSION['login_status']);
+} elseif (isset($_SESSION['user_mail']) && $_SESSION['user_mail'] != '') {
+    header("refresh:3; url=" . ALL_TODO_LIST_PHP_LOCATION);
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -6,20 +17,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List Home</title>
+
+    <!-- Style Reference and Libraries -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/mystyle.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
-        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
-        integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"
-        integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/index.css">
+
+    <!--JS Reference and jQuery Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/todo_list.js"></script>
 </head>
 
@@ -37,7 +44,7 @@
                     <a href="#about" class="w3-button w3-block w3-white" onblur="window.location.reload()">About</a>
                 </div>
                 <div class="w3-col s3">
-                    <a href="#loginForm" class="w3-button w3-block w3-white">Login/Register</a>
+                    <a href="#loginForm" class="w3-button w3-block w3-white switch-btn">Login/Register</a>
                 </div>
                 <div class="w3-col s3">
                     <a href="#team" class="w3-button w3-block w3-white">Team</a>
@@ -50,16 +57,13 @@
             <!-- About Section -->
             <div class="w3-row w3-padding-64 w3-padding-large" id="about">
                 <div class="w3-col m6 w3-padding-large w3-hide-small">
-                    <img src="images/todo.jpg" class="w3-round w3-image w3-opacity-min fade-in" alt="To Do" width="100%"
-                        height="auto" />
+                    <img src="images/todo.jpg" class="w3-round w3-image w3-opacity-min fade-in" alt="To Do" width="100%" height="auto" />
                 </div>
                 <div class="w3-col m6 w3-padding-large">
-                    <h1 class="w3-right w3-text-black typewriter w3-hover-text-brown w3-hide-small w3-hide-medium"
-                        style="text-shadow: 2px 2px 5px red">
+                    <h1 class="w3-right w3-text-black typewriter w3-hover-text-brown w3-hide-small w3-hide-medium" style="text-shadow: 2px 2px 5px red">
                         About To-Do List.
                     </h1>
-                    <h1 class="w3-right w3-text-black typewriter w3-hover-text-brown w3-hide-large"
-                        style="text-shadow: 2px 2px 5px red">
+                    <h1 class="w3-right w3-text-black typewriter w3-hover-text-brown w3-hide-large" style="text-shadow: 2px 2px 5px red">
                         About.
                     </h1>
                     <br />
@@ -96,21 +100,22 @@
         <div class="w3-content w3-row w3-padding-64 w3-center" id="loginForm">
             <div class="main">
                 <div class="container a-container" id="a-container">
-                    <form class="form" id="a-form" method="" action="">
+                    <form class="form" id="login-form" name="login-form" method="POST" action="controller/login.php">
                         <h2 class="form_title title">Login</h2>
+                        <div id="login-status" class="w3-center w3-padding-8 error"><?php echo $loginmessage ?></div>
                         <div>
                             <i class="fas fa-envelope"></i>
                             <input class="form__input" type="email" placeholder="Email" id="email" name="email" required>
                         </div>
                         <div>
-                            <i class="fas fa-eye-slash" id="log_pass" onclick="togglePasswordVisibility(id,'passwd')"></i>
+                            <i class="fas fa-eye-slash" id="log_pass" onclick="togglePasswordVisibility(id,'passwd')" style="cursor: pointer;"></i>
                             <input class="form__input" type="password" placeholder="Password" id="passwd" name="passwd" required>
                         </div>
                         <input type="submit" value="Login" id="login" name="login" class="form__button button">
                     </form>
                 </div>
                 <div class="container b-container" id="b-container">
-                    <form class="form" id="registration-form" name="registration-form" method="POST" action="../controller/register.php">
+                    <form class="form" id="registration-form" name="registration-form" method="POST" action="controller/register.php">
                         <h2 class="form_title title">Create Account</h2>
                         <div id="user-availability-status" class="w3-center w3-padding-8"></div>
                         <div>
@@ -122,11 +127,11 @@
                             <input class="form__input" type="email" placeholder="Email" id="mail" name="mail" required>
                         </div>
                         <div>
-                            <i class="fas fa-eye-slash" id="reg_pass" onclick="togglePasswordVisibility(id,'pass')"></i>
-                            <input class="form__input" type="password" placeholder="Password" id="pass" name="pass" minlength="5" required>
+                            <i class="fas fa-eye-slash" id="reg_pass" onclick="togglePasswordVisibility(id,'pass')" style="cursor: pointer;"></i>
+                            <input class="form__input" type="password" placeholder="Password" id="pass" name="pass" required>
                         </div>
                         <div>
-                            <i class="fas fa-eye-slash" id="reg_rpass" onclick="togglePasswordVisibility(id,'retype_pass')"></i>
+                            <i class="fas fa-eye-slash" id="reg_rpass" onclick="togglePasswordVisibility(id,'retype_pass')" style="cursor: pointer;"></i>
                             <input class="form__input" type="password" placeholder="Retype Password" id="retype_pass" name="retype_pass" required>
                         </div>
                         <input type="submit" value="Register" id="register" name="register" class="form__button button">
@@ -166,8 +171,8 @@
                     <h4>1. Venkata Lakshmi Sasank Tipparaju</h4>
                     <p class="w3-text-dark-grey">Student ID# 700738838</p><br>
 
-                    <h4>2. Jaya Chandu</h4>
-                    <p class="w3-text-dark-grey">Student ID#700738838/p><br>
+                    <h4>2. Jaya Chandu Mandava</h4>
+                    <p class="w3-text-dark-grey">Student ID#700733924</p><br>
                 </div>
             </div>
             <hr><br>
@@ -175,8 +180,7 @@
         <hr>
         <!-- Footer -->
         <footer class="w3-bottom w3-center w3-black w3-padding-small" style="z-index: 1000;">
-            <p>Developed by <a href="https://www.w3schools.com/w3css/default.asp" class="w3-hover-text-green">Sasank
-                    Tipparaju & Jaya Chandu</a></p>
+            <p>Developed by <a href="" class="w3-hover-text-green">Sasank Tipparaju & Jaya Chandu</a></p>
         </footer>
     </div>
 </body>

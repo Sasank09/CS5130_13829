@@ -19,5 +19,7 @@ if (ini_get("session.use_cookies")) {
 
 // Finally, destroy the session.
 session_destroy();
-Header(INDEX_PAGE_LOCATION);
+echo "Please wait while we log you out in 5 seconds";
+
+Header("Refresh:5;url=".INDEX_PAGE_LOCATION);
 ?>
