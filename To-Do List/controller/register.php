@@ -4,7 +4,7 @@
  */
 require_once "../includes/utility.php";
 session_start();
-$msg = '<h3>Please wait while we process your registration in 3 seconds...</h3>';
+$msg = REGISTRATION_PAGE_MSG;
 if(isset($_SESSION['user_mail']) && $_SESSION['user_mail'] != '') {
     header("refresh:2; url=".ALL_TODO_LIST_PHP_LOCATION);
 }
@@ -28,21 +28,27 @@ elseif (isset($_POST['register']) && isset($_POST['mail']) && isset($_POST['pass
                 "pass" => hash("sha512",$pass)
             );
             if(executeQuery($insertQuery,$insertBindParams,"NONE")) {
-                $msg = "Registration is Successful, please wait while we log you into application in 3 seconds";
-                header("refresh:3; url=".ALL_TODO_LIST_PHP_LOCATION);
+                $_SESSION['user_mail'] = $mail;
+                $_SESSION['user_fullname'] = $fullname;
+                $_POST = array();
+                header("refresh:2; url=".ALL_TODO_LIST_PHP_LOCATION);
             } else{ 
-                $msg = "Regsitration is failed due to error, redirecting to home page in 3seconds. Please try again or contact your administrator";
-                header("refresh:3; url=".INDEX_LOGIN_PAGE_LOCATION);
+                $msg = REGISTRATION_FAIL_REDIRECT_MSG;
+                header("refresh:2; url=".INDEX_LOGIN_PAGE_LOCATION);
             }
         }
         else {
-            $msg = "User already exists, Redirecting to login page in 3 seconds. Please login using with same email or use another mail to register";
-            header("refresh:3; url=".INDEX_LOGIN_PAGE_LOCATION);
+            $msg = EMAIL_ALREADY_EXISTS_MSG.REGISTRATION_FAIL_REDIRECT_MSG;
+            header("refresh:2; url=".INDEX_LOGIN_PAGE_LOCATION);
         }
     }
+    echo $msg;
 }
 else {
     header("refresh:3; url=".INDEX_PAGE_LOCATION);
 }
-
-echo $msg;
+?>
+<?php
+$_POST = array();
+die();
+?>

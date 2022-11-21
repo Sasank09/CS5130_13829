@@ -3,10 +3,10 @@ require_once "includes/utility.php";
 session_start();
 $loginmessage = "";
 if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
-    $loginmessage = "Invalid Credentials, Please try again.";
+    $loginmessage = USER_LOGIN_ERROR_MSG;
     unset($_SESSION['login_status']);
 } elseif (isset($_SESSION['user_mail']) && $_SESSION['user_mail'] != '') {
-    header("refresh:3; url=" . ALL_TODO_LIST_PHP_LOCATION);
+    header("refresh:0; url=" . ALL_TODO_LIST_PHP_LOCATION);
 }
 ?>
 <!DOCTYPE html>
@@ -37,17 +37,17 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
         <div class="w3-top" style="z-index: 1000;">
             <div class="w3-row w3-padding w3-white w3-left-align" style="letter-spacing:2px;">
                 <div class="w3-col s3">
-                    <a href="#about" class="w3-button w3-block w3-white" onblur="window.location.reload()">To-List
+                    <a href="#about" class="w3-button w3-block w3-white nav_but" onblur="window.location.reload()">To-List
                         Home</a>
                 </div>
                 <div class="w3-col s3">
-                    <a href="#about" class="w3-button w3-block w3-white" onblur="window.location.reload()">About</a>
+                    <a href="#about" class="w3-button w3-block w3-white nav_but" onblur="window.location.reload()">About</a>
                 </div>
                 <div class="w3-col s3">
                     <a href="#loginForm" class="w3-button w3-block w3-white switch-btn">Login/Register</a>
                 </div>
                 <div class="w3-col s3">
-                    <a href="#team" class="w3-button w3-block w3-white">Team</a>
+                    <a href="#team" class="w3-button w3-block w3-white  nav_but">Team</a>
                 </div>
             </div>
         </div>
@@ -124,7 +124,7 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
                         </div>
                         <div>
                             <i class="fas fa-envelope"></i>
-                            <input class="form__input" type="email" placeholder="Email" id="mail" name="mail" required>
+                            <input class="form__input" type="email" placeholder="Email" id="mail" name="mail" required> 
                         </div>
                         <div>
                             <i class="fas fa-eye-slash" id="reg_pass" onclick="togglePasswordVisibility(id,'pass')" style="cursor: pointer;"></i>

@@ -19,7 +19,27 @@ if (ini_get("session.use_cookies")) {
 
 // Finally, destroy the session.
 session_destroy();
-echo "Please wait while we log you out in 5 seconds";
-
-Header("Refresh:5;url=".INDEX_PAGE_LOCATION);
+$msg= LOGOUT_PAGE_MSG;
+Header("Refresh:2;url=".INDEX_PAGE_LOCATION);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <?php getHead(); ?>
+    <script>
+        $(document).ready(function () {
+            $("#cover-spin").show().delay(1900).fadeOut();
+        }); 
+    </script>
+</head>
+<body>
+    <div id="cover-spin"></div>
+    <?php getHeader();
+        echo '<div class="fs-4 text-white bg-info">'.$msg.'</div>';
+    ?>
+</body>
+</html>
+<?php
+$_POST = array();
+die();
 ?>

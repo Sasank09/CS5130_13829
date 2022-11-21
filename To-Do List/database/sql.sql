@@ -35,9 +35,11 @@ CREATE TABLE users (
 
 CREATE TABLE todos (
   todo_id int(10) NOT NULL AUTO_INCREMENT,
-  title varchar(100) NOT NULL,
+  title varchar(75) NOT NULL,
   description text,
   priority varchar(10) DEFAULT 'Medium',
+  category varchar(10) DEFAULT 'Personal',
+  status varchar(15) NOT NULL DEFAULT 'Not Started',
   created_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   due_date datetime,

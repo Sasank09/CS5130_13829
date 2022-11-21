@@ -20,20 +20,21 @@ if (isset($_GET["email"]) && !empty($_GET["email"])) {
         if (executeQuery($sql, $arry, "ONE")) {
             $response = array(
                 "status" => 0,
-                "message" => EMAIL_NOTAVAILABLE
+                "message" => EMAIL_ALREADY_EXISTS_MSG
             );
         } else {
             $response = array(
                 "status" => 1,
-                "message" => EMAIL_AVAILABLE
+                "message" => EMAIL_AVAILABLE_TO_USE_MSG
             );
         }
         echo json_encode($response);
     } else {
         $response = array(
             "status" => 0,
-            "message" => EMAIL_INVALID
+            "message" => EMAIL_INVALID_MSG
         );
         echo json_encode($response);
     }
+    die();
 }

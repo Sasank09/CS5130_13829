@@ -18,7 +18,7 @@ function dbConnection()
         return  $databaseConnection;
     } catch (PDOException $e) {
         $message = $e->getMessage();
-        echo $message;
+        echo "<b>Something went wrong</b>, Please contact admin with the error message as...: ".$message;
     }
 }
 

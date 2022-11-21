@@ -11,17 +11,6 @@ function sanitizeHTML(text) {
     return $('<div>').text(text).html();
 }
 
-/**
- * Function to display and hide the spinner with the parameter to set the timeout
- * @param {Number} timeout - time to display and hide the spinner
- */
-function toggleSpinner(timeout) {
-    $("#cover-spin").show();
-    setTimeout(() => {
-        $("#cover-spin").hide();
-    }, timeout);
-}
-
 
 /**
  * @param {String} togId - the element id of the eye icon on which the user clicks
@@ -36,6 +25,9 @@ function togglePasswordVisibility(togId, passId) {
 
 // function to handle on loading of index.php page
 function onLoadingIndexPage() {
+    $(".nav_but").click(function() {
+        $("#cover-spin").show().delay(500).fadeOut(); 
+    })
     loginFormHandler();
 }
 
@@ -46,7 +38,7 @@ function loginFormHandler() {
 
     let changeForm = (e) => {
         $("#switch-cnt").addClass("is-gx");
-        toggleSpinner(500);
+        $("#cover-spin").show().delay(500).fadeOut();
         setTimeout(function () {
             $("#switch-cnt").removeClass("is-gx");
         }, 1500)
@@ -77,8 +69,9 @@ function checkUserMailAvailability() {
             if ($("#mail").val()) {
                 const url = '//' + location.host + '/To-Do%20List/controller/check_user.php?email=' + $("#mail").val();
                 $.getJSON(url, function (data) {
-                    console.log(reg_email_err)
+                    $("#cover-spin").show().delay(300).fadeOut();
                     if (data.status === 0) {
+                       
                         $("#user-availability-status").html(
                             "<span style='color:red; font-weight:bold'>" + sanitizeHTML(data.message) + "</span>"
                         );
@@ -148,7 +141,7 @@ function validateRegistrationForm() {
                 }
             },
             submitHandler: function (form) {
-                toggleSpinner(1000);
+                $("#cover-spin").show().delay(500).fadeOut();
                 if (!reg_email_err) {
                     form.submit();
                 }
@@ -183,7 +176,7 @@ function validateLoginForm() {
                 },
             },
             submitHandler: function (form) {
-                toggleSpinner(1000);
+                $("#cover-spin").show().delay(500).fadeOut();
                 form.submit();
             }
         });
