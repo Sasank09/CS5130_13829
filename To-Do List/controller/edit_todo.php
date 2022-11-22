@@ -24,8 +24,7 @@ if (!isset($_SESSION['user_mail']) && $_SESSION['user_mail'] == '') {
 
 <body>
     <?php getHeader(); ?>
-    <div id="viewContainer" class="container m-6">
-        <div id="cover-spin"></div>
+    <div id="formContainer" class="container m-6">
         <div class="row">
             <div class="col-md-6 mx-auto">
                 <div class="card bg-light rounded border shadow">
@@ -35,55 +34,11 @@ if (!isset($_SESSION['user_mail']) && $_SESSION['user_mail'] == '') {
                     <div class="card-body p-4">
                         <div id="update_status"></div>
                         <form action="crud_todos.php" method="POST" id="edit_todo_form">
-                            <div class="mb-3">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title" name="title" 
-                                    value="<?php echo $result['title'] ?>" maxlenght="75" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" name="description" rows="3"><?php echo $result['description'] ?></textarea>
-                            </div>
-                            <div class="mb-3 row input-group">
-                                <div class="col-6">
-                                    <label for="priority" class="form-label">Priority</label>
-                                    <select name="priority" id="priority" class="form-control">
-                                        <option value="Medium">Medium</option>
-                                        <option value="High">High</option>
-                                        <option value="Low">Low</option>
-                                    </select>
-                                </div>
-                                <div class="col-6">
-                                    <label for="category" class="form-label">Category</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="category" id="personal" value="Personal" checked>
-                                        <label class="form-check-label" for="personal">Personal</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="category" id="work" value="Work">
-                                        <label class="form-check-label" for="work">Work</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-4 row input-group">
-                                <div class="col-6">
-                                    <label for="dueDate" class="form-label">Due Date</label>
-                                    <input type="datetime-local" name="dueDate" id="dueDate" class="form-control" value="<?php echo $result['due_date'] ?>" required>
-                                </div>
-                                <div class="col-6">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="Not Started">Not Started</option>
-                                        <option value="In Progress">In Progress</option>
-                                        <option value="Completed">Completed</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <?php getFormContent($result); ?>
                             <hr>
                             <div id="viewFooter" class="bg-light mt-4 clearfix">
                                 <input type="submit" id="updateTodo" name="updateTodo" class="btn btn-primary" value="Update Todo">
-                                <a href="delete_todo.php?id=<?php echo $result['todo_id']; ?>" class="btn btn-danger">Delete</a>
-                                <a href="all_todos.php" id="cancel" name="cancel" class="btn float-end btn-danger">Cancel</a>
+                                 <?php getFormButtons($result["todo_id"]) ?>
                             </div>
                         </form>
                     </div>
@@ -92,7 +47,8 @@ if (!isset($_SESSION['user_mail']) && $_SESSION['user_mail'] == '') {
         </div>
     </div>
     <?php getFooter(); ?>
-    <script>
+    <script type="text/javascript">
+        "use strict";
         $(document).ready(function() {
             $("#cover-spin").show().delay(500).fadeOut();
             $('#status').val("<?php echo $result['status']; ?>");
@@ -108,12 +64,12 @@ if (!isset($_SESSION['user_mail']) && $_SESSION['user_mail'] == '') {
                 json["updateTodo"] = "Update Todo";
                 json["todoId"] = "<?php echo $result['todo_id'] ?>";
                 $.post("crud_todos.php", json, function(response) {
-                    data = JSON.parse(response);
+                    var data = JSON.parse(response);
                     if (data.status == "Success") {
                         $("#update_status").html(
                             "<div class='alert alert-success'>" + sanitizeHTML(data.message) + "</div>"
                         ).delay(1000).fadeOut();
-                        window.location.replace("http://localhost/To-Do%20List/controller/view_todo.php?id="+json["todoId"]);
+                        window.location.replace("http://localhost/To-Do%20List/controller/view_todo.php?id=" + json["todoId"]);
                     } else {
                         $("#update_status").html(
                             "<div class='alert alert-danger'>" + sanitizeHTML(data.message) + "</div>"
@@ -125,10 +81,11 @@ if (!isset($_SESSION['user_mail']) && $_SESSION['user_mail'] == '') {
                     alert("error");
                 });
             });
-    
+
         });
     </script>
 </body>
+
 </html>
 
 <?php

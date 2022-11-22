@@ -13,13 +13,17 @@ const EMAIL_ALREADY_EXISTS_MSG = "Email already exists with us...";
 const EMAIL_AVAILABLE_TO_USE_MSG = "Email is available to use.";
 const EMAIL_INVALID_MSG = "Email is invalid, please use sample@domain.tld format.";
 const TODO_INSERT_SUCCESS_MSG = "Todo is created Successfully.";
-const TODO_INSERT_FAIL_MSG = "Todo is not created, please review and try again.";
+const TODO_INSERT_FAIL_MSG = "Something went wrong, Todo is not created, please try again.";
 const TODO_UPDATE_SUCCESS_MSG = "Todo is Updated Successfully.";
-const TODO_UPDATE_FAIL_MSG = "Todo is not updated, please review and try again.";
+const TODO_UPDATE_FAIL_MSG = "Something went wrong, Todo is not updated, please try again.";
+const TODO_STATUS_UPDATE_SUCCESS_MSG = "Todo status is updated successfully.";
+const TODO_STATUS_UPDATE_FAIL_MSG = "Something went wrong, Todo status is not updated..";
 const REGISTRATION_PAGE_MSG = "Please wait while we process your registration in 3 seconds...";
 const REGISTRATION_FAIL_REDIRECT_MSG = "Regsitration is failed, redirecting to home page in 3seconds. Please try again...";
 const LOGIN_PAGE_MSG = "Please wait while we process your request and redirect in 3 seconds...";
 const LOGOUT_PAGE_MSG = "Please wait while we log you out and redirect in 3 seconds";
+const NO_TODOS_AVAILABLE = "No todo's are available as of now!!!..";
+const NO_TODOS_COMPLETED = "No todo's are completed as of now!!!..";
 //All locations stored as constants whilw we navigate through application
 const INDEX_PAGE_LOCATION = 'http://localhost/To-Do%20List/';
 const INDEX_LOGIN_PAGE_LOCATION = 'http://localhost/To-Do%20List/index.php#loginForm';
@@ -28,25 +32,22 @@ const VIEW_TODO_PHP_LOCATION = 'http://localhost/To-Do%20List/controller/view_to
 const REGISTRATION_PHP_LOCATION = 'http://localhost/To-Do%20List/controller/register.php';
 const LOGIN_PHP_LOCATION = 'http://localhost/To-Do%20List/controller/login.php';
 
+date_default_timezone_set('America/Chicago');
 //Common method to execute the query and communication with the database for CRUD operations
 function executeQuery($sql, $binded_params, $fetchMode)
 {
     $pdo = dbConnection();
-    try {
-        $stmt = $pdo->prepare($sql);
-        if ($fetchMode == "NONE" && $stmt->execute($binded_params)) {
-            return true;
-        } elseif ($fetchMode == "ONE" && $stmt->execute($binded_params)) {
-            $row = $stmt->fetch();
-            return $row;
-        } elseif ($fetchMode == "ALL" && $stmt->execute($binded_params)) {
-            $rows = $stmt->fetchAll();
-            return $rows;
-        } else {
-            return false;
-        }
-    } catch (Exception $e) {
-        echo  "<b>Something went wrong</b>, Please contact admin with the error message as...: " . $e->getMessage();
+    $stmt = $pdo->prepare($sql);
+    if ($fetchMode == "NONE" && $stmt->execute($binded_params)) {
+        return true;
+    } elseif ($fetchMode == "ONE" && $stmt->execute($binded_params)) {
+        $row = $stmt->fetch();
+        return $row;
+    } elseif ($fetchMode == "ALL" && $stmt->execute($binded_params)) {
+        $rows = $stmt->fetchAll();
+        return $rows;
+    } else {
+        return false;
     }
 }
 
@@ -76,8 +77,6 @@ function getHead()
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>' . $pageTitle . '</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <style>
         body {
             min-width: 300px;
@@ -133,7 +132,24 @@ function getHead()
             -webkit-animation: spin .8s linear infinite;
             animation: spin .8s linear infinite;
         }
+        label.error {
+            color: red;
+            font-size: 0.8rem;
+            display: block;
+            text-align: left;
+        
+        }
+        
+        input.error{
+            border: 1px solid red;
+            font-weight: 300;
+            color: red;
+        }
     </style>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <!-- jQuery Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
         integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
@@ -142,7 +158,8 @@ function getHead()
         integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script>
+    <script type="text/javascript">
+        "use strict";
         function convertFormToJSON(form) {
             return $(form)
                 .serializeArray()
@@ -156,9 +173,9 @@ function getHead()
         }
 
         function sanitizeHTML(text) {
-            return $("<div>").text(text).html();
+            return $("<span>").text(text).html();
         }
-    </script>
+        </script>
     ';
 
     echo $output;
@@ -169,7 +186,7 @@ function getHead()
 function getHeader()
 {
     $username = $_SESSION["user_fullname"];
-    $output = '<header class="py-2 mb-3 border-bottom bg-white">
+    $output = '<header class="py-2 mb-3 border-bottom bg-white ">
         <div class="d-flex flex-wrap justify-content-center container">
             <a href="all_todos.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                 <span class="fs-5">Todo List, Welcome ' . $username . '!! </span>
@@ -180,6 +197,7 @@ function getHeader()
                 <div class="nav-item"><a href="logout.php" class="btn btn-danger text-white">Logout</a></div>
             </div>
         </div>
+        <div id="cover-spin"></div>
     </header>';
 
     echo $output;
@@ -193,6 +211,55 @@ function getFooter()
         <span>Developed by <a href="" class="text-info">Sasank Tipparaju & Jaya Chandu</a></span>
     </footer>
     ';
+    echo $output;
+}
+
+
+function getFormContent($result)
+{
+    $output = '             <div class="mb-3">
+    <label for="title" class="form-label">Title <sub><i>Max Characters allowed 100</i></sub></label>
+    <input type="text" class="form-control" id="title" name="title" placeholder="e.g. Create PPT for Web Applications Project" value="' . $result['title'] . '" maxlength="100" required>
+</div>
+<div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea class="form-control" id="description" name="description" rows="3">' . $result['description'] . '</textarea>
+</div>
+<div class="mb-3 row input-group">
+    <div class="col-6">
+        <label for="priority" class="form-label">Priority</label>
+        <select name="priority" id="priority" class="form-control">
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Low">Low</option>
+        </select>
+    </div>
+    <div class="col-6">
+        <label for="category" class="form-label">Category</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="category" id="personal" value="Personal" checked>
+            <label class="form-check-label" for="personal">Personal</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="category" id="work" value="Work">
+            <label class="form-check-label" for="work">Work</label>
+        </div>
+    </div>
+</div>
+<div class="mb-4 row input-group">
+    <div class="col-6">
+        <label for="dueDate" class="form-label">Due Date</label>
+        <input type="datetime-local" name="dueDate" id="dueDate" class="form-control" value="' . $result['due_date'] . '" min="' . date(" Y-m-d H:i", time()) . '" required>
+    </div>
+    <div class="col-6">
+        <label for="status" class="form-label">Status</label>
+        <select name="status" id="status" class="form-control">
+            <option value="Not Started">Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+    </div>
+</div>';
     echo $output;
 }
 
@@ -213,25 +280,58 @@ function textLimit($string, $limit)
 //Get Todo function - to display each todo in form of card
 function displayCard($todo)
 {
+    $isCompleted = $todo['status'] == "Completed" ? "checked" : "";
     $output = '<div class="card shadow-sm">
         <div class="card-body">
-            <h4 class="card-title">' . textLimit($todo['title'], 28) . '</h4>
-            <p class="card-text">' . textLimit($todo['description'], 75) . '</p>
-            <small class="text-muted">Complete By: ' . $todo['due_date'] . '</small>
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                    <a href="view_todo.php?id=' . $todo['todo_id'] . '" class="btn btn-sm btn-outline-secondary">View</a>
-                    <a href="edit_todo.php?id=' . $todo['todo_id'] . '" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <h5 class="card-header">' . textLimit($todo['title'], 20) . '</h5>
+            <div class="card-body">
+                <div class="card-subtitle"> 
+                    <small class="text-warning">' . $todo['status'] . '</small>
+                    <small class=" m-2 text-info">' . $todo['priority'] . '</small>
+                    <small class=" m-2 text-muted">' . $todo['category'] . '</small>
                 </div>
-                <small class=" fw-bold mb-1 bg-light text-warning">' . $todo['priority'] . '</small>
-                <small class=" fw-bold mb-1 bg-light text-info">' . $todo['category'] . '</small>
+                <p class="card-text">' . textLimit($todo['description'], 50) . '</p>
+                <small class="card-text text-muted">Complete By: ' . $todo['due_date'] . '</small>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="view_todo.php?id=' . $todo['todo_id'] . '" class="btn btn-sm btn-outline-secondary">View</a>
+                <a href="edit_todo.php?id=' . $todo['todo_id'] . '" class="btn btn-sm btn-outline-secondary">Edit</a>
+               <span class="form-check form-switch float-end">
+                    <input class="form-check-input" type="checkbox" role="switch" id="' . $todo['todo_id'] . '" name="markComplete" onclick="updateStatus(id) "' . $isCompleted . '>
+                    <small class="form-check-label" for="markComplete">Mark Done</small>
+                </span>
             </div>
         </div>
     </div>';
 
-    echo $output;
+    return $output;
 }
 
+function getFormButtons($id)
+{
+    $output = '                                <!-- Button trigger modal -->
+    <input type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" value="Delete">
+    <!-- Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteConfirmModalLabel">Delete Confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this record, this action cannot be undone...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="delete_todo.php?id=' . $id . ' " class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="all_todos.php" id="cancel" name="cancel" class="btn float-end btn-secondary">Go Back</a>';
+    echo $output;
+}
 
 
 // Dynamic Title function for each webpage

@@ -3,6 +3,7 @@ require_once "includes/utility.php";
 session_start();
 $loginmessage = "";
 if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
+    $mail = $_POST['email'];
     $loginmessage = USER_LOGIN_ERROR_MSG;
     unset($_SESSION['login_status']);
 } elseif (isset($_SESSION['user_mail']) && $_SESSION['user_mail'] != '') {

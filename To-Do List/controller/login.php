@@ -37,19 +37,18 @@ if (isset($_SESSION['user_mail']) && $_SESSION['user_mail'] != '') {
 
 <head>
     <?php getHead(); ?>
-    <script>
-        $(document).ready(function() {
-            $("#cover-spin").show().delay(1900).fadeOut();
-        });
-    </script>
 </head>
 
 <body>
-    <div id="cover-spin"></div>
     <?php getHeader();
-    echo '<div class="fs-4 fw-bold text-white bg-info">' . $msg . '';
+    echo '<div class="fs-4 fw-bold text-white bg-info">' . $msg . '</div>';
     getFooter();
     ?>
+    <script>
+        $(document).ready(function() {
+            $("#cover-spin").show().delay(1990).fadeOut();
+        });
+    </script>
 </body>
 
 </html>

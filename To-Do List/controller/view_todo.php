@@ -25,77 +25,83 @@ if (!isset($_SESSION['user_mail']) && $_SESSION['user_mail'] == '') {
 <body>
     <?php getHeader(); ?>
     <div id="viewContainer" class="container m-6">
-        <div id="cover-spin"></div>
-        <div class="row">
-            <div class="col-md-6 mx-auto">
-                <div class="card bg-light rounded border shadow">
-                    <div class="card-header bg-info ">
-                        <h4 class="card-title">View Todo</h4>
-                    </div>
-                    <div class="card-body p-4">
-                        <div id="insert_status"></div>
-                        <form action="add_todo.php" method="POST" id="add_todo_form">
-                            <?php echo $msg ?>
-                            <div class="mb-3">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title" name="title" placeholder="e.g. Create PPT for Web Applications Project" value="<?php echo $result['Title'] ?>" maxlenght="75" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                            </div>
-                            <div class="mb-3 row input-group">
-                                <div class="col-6">
-                                    <label for="priority" class="form-label">Priority</label>
-                                    <select name="priority" id="priority" class="form-control">
-                                        <option value="Medium">Medium</option>
-                                        <option value="High">High</option>
-                                        <option value="Low">Low</option>
-                                    </select>
-                                </div>
-                                <div class="col-6">
-                                    <label for="category" class="form-label">Category</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="category" id="personal" value="Personal" checked>
-                                        <label class="form-check-label" for="personal">Personal</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="category" id="work" value="Work">
-                                        <label class="form-check-label" for="work">Work</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-4 row input-group">
-                                <div class="col-6">
-                                    <label for="dueDate" class="form-label">Due Date</label>
-                                    <input type="datetime-local" name="dueDate" id="dueDate" class="form-control" required>
-                                </div>
-                                <div class="col-6">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select name="status" id="category" class="form-control">
-                                        <option value="Not Started">Not Started</option>
-                                        <option value="In Progress">In Progress</option>
-                                        <option value="Completed">Completed</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <hr>
-                            <div id="viewFooter" class="bg-light mt-4 clearfix">
-                                <input type="submit" id="addTodo" name="addTodo" class="btn btn-primary" value="Add Todo">
-                                <input type="reset" class="btn btn-danger" value="Reset">
-                                <button id="cancel" name="cancel" class="btn float-end btn-danger">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
+        <div class="card bg-light rounded border shadow">
+            <div class="card-header bg-warning text-center">
+                <h4 class="card-title text-light">View Todo</h4>
+            </div>
+            <div class="m-2 row">
+                <div class="col-2">
+                    <label for="title" class="fs-5 text-seoncdary fw-bold">Title </label>
+                </div>
+                <div class="col-10">
+                    <output name="title" class="fs-6"><?php echo $result['title']; ?></output>
+                </div>
+            </div>
+            <div class="m-2 row bg-white">
+                <div class="col-2">
+                    <label for="description" class="fs-5 text-seoncdary fw-bold">Description</label>
+                </div>
+                <div class="col-10">
+                    <output name="description" class="fs-6"><?php echo $result['description']; ?></output>
+                </div>
+            </div>
+            <div class="m-2 row">
+                <div class="col-2">
+                    <label for="priority" class="fs-5 text-seoncdary fw-bold">Priority </label>
+                </div>
+                <div class="col-10">
+                    <output name="priority" class="fs-6"><?php echo $result['priority']; ?></output>
+                </div>
+            </div>
+            <div class="m-2 row bg-white">
+                <div class="col-2">
+                    <label for="duedate" class="fs-5 text-seoncdary fw-bold">Complete By</label>
+                </div>
+                <div class="col-10">
+                    <output name="duedate" class="fs-6"><?php echo $result['due_date']; ?></output>
+                </div>
+            </div>
+            <div class="m-2 row">
+                <div class="col-2">
+                    <label for="category" class="fs-5 text-seoncdary fw-bold">Category</label>
+                </div>
+                <div class="col-10">
+                    <output name="category" class="fs-6"><?php echo $result['category']; ?></output>
+                </div>
+            </div>
+            <div class="m-2 row bg-white">
+                <div class="col-2">
+                    <label for="status" class="fs-5 text-seoncdary fw-bold">Status</label>
+                </div>
+                <div class="col-10">
+                    <output name="status" class="fs-6"><?php echo $result['status']; ?></output>
+                </div>
+            </div>
+            <div class="m-2 row bg-white">
+                <div class="col-2">
+                    <label for="createdon" class="fs-5 text-seoncdary fw-bold">Created Date</label>
+                </div>
+                <div class="col-10">
+                    <output name="createdon" class="fs-6"><?php echo $result['created_date']; ?></output>
+                </div>
+            </div>
+            <div class="m-2 row bg-white">
+                <div class="col-2">
+                    <label for="createdon" class="fs-5 text-seoncdary fw-bold">Modified Date</label>
+                </div>
+                <div class="col-10">
+                    <output name="createdon" class="fs-6"><?php echo $result['modified_date']; ?></output>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <hr>
+                <div id="viewFooter" class="bg-light mt-3 clearfix">
+                    <a href="<?php echo 'edit_todo.php?id=' . $result['todo_id']; ?>" class="btn btn-primary  px-4 me-2">Edit</a>
+                    <?php getFormButtons($result['todo_id']);?>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <div class="mb-5">
-        <a href="<?php echo 'edit_todo.php?id=' . $result['id']; ?>" class="btn btn-primary btn-lg px-4 me-2">Edit</a>
-        <a href="<?php echo 'delete_todo.php?id=' . $result['id']; ?>" class="btn btn-danger btn-lg px-4">Delete</a>
-    </div> -->
-
     <script>
         $(document).ready(function() {
             $("#cover-spin").show().delay(500).fadeOut();

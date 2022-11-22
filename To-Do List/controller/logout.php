@@ -26,17 +26,16 @@ Header("Refresh:2;url=".INDEX_PAGE_LOCATION);
 <html lang="en">
 <head>
     <?php getHead(); ?>
-    <script>
-        $(document).ready(function () {
-            $("#cover-spin").show().delay(1900).fadeOut();
-        }); 
-    </script>
 </head>
 <body>
-    <div id="cover-spin"></div>
     <?php getHeader();
-        echo '<div class="fs-4 text-white bg-info">'.$msg.'</div>';
+        echo '<div class="fs-4 fw-bold text-white bg-info">'.$msg.'</div>';
     ?>
+    <script>
+        $(document).ready(function() {
+            $("#cover-spin").show().delay(1990).fadeOut();
+        });
+    </script>
 </body>
 </html>
 <?php
