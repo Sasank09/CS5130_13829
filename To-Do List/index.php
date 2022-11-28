@@ -1,12 +1,18 @@
 <?php
 require_once "includes/utility.php";
+/**
+ * @file index.php
+ * Landing page for users to login/register and about basic info.
+ * requires utility.php to run database and common code for the application.
+ */
 session_start();
-$loginmessage = "";
-if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
-    $mail = $_POST['email'];
-    $loginmessage = USER_LOGIN_ERROR_MSG;
+$loginErrorMessage = "";
+// checking login session
+if (isset($_SESSION['login_status']) && $_SESSION['login_status'] === 'FAIL') {
+    $loginErrorMessage = INVALID_USER_CREDS;
     unset($_SESSION['login_status']);
-} elseif (isset($_SESSION['user_mail']) && $_SESSION['user_mail'] != '') {
+} elseif (isset($_SESSION['user_mail'])  && isset($_SESSION['login_status']) &&  !empty($_SESSION['user_mail']) && $_SESSION['login_status'] === 'SUCCESS') {
+    $loginErrorMessage = "";
     header("refresh:0; url=" . ALL_TODO_LIST_PHP_LOCATION);
 }
 ?>
@@ -29,26 +35,29 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/todo_list.js"></script>
+    <script>
+        window.addEventListener('load', onLoadingIndexPage);
+    </script>
 </head>
 
-<body onload="onLoadingIndexPage()">
-    <div class="index_main_body">
+<body">
+    <div id="index_body" class="index_main_body">
         <div id="cover-spin"></div>
         <!-- Navbar (sit on top) -->
-        <div class="w3-top" style="z-index: 1000;">
+        <div class="w3-top " style="z-index: 1000;">
             <div class="w3-row w3-padding w3-white w3-left-align" style="letter-spacing:2px;">
-                <div class="w3-col s3">
+                <div class="w3-col s3 w3-mobile">
                     <a href="#about" class="w3-button w3-block w3-white nav_but" onblur="window.location.reload()">To-List
                         Home</a>
                 </div>
-                <div class="w3-col s3">
+                <div class="w3-col s3 w3-hide-small">
                     <a href="#about" class="w3-button w3-block w3-white nav_but" onblur="window.location.reload()">About</a>
                 </div>
-                <div class="w3-col s3">
-                    <a href="#loginForm" class="w3-button w3-block w3-white switch-btn">Login/Register</a>
+                <div class="w3-col s3 w3-mobile">
+                    <a href="#loginForm" class="w3-button w3-block w3-white switch-btn w3-mobile">Login/Register</a>
                 </div>
-                <div class="w3-col s3">
-                    <a href="#team" class="w3-button w3-block w3-white  nav_but">Team</a>
+                <div class="w3-col s3 w3-hide-small">
+                    <a href="#team" class="w3-button w3-block w3-white nav_but">Team</a>
                 </div>
             </div>
         </div>
@@ -97,13 +106,13 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
             <hr />
         </div>
 
-        <!-- Login Section -->
-        <div class="w3-content w3-row w3-padding-64 w3-center" id="loginForm">
+        <!-- Login/Registration Section -->
+        <div class="w3-content w3-row w3-padding-64 w3-center w3-mobile" id="loginForm">
             <div class="main">
                 <div class="container a-container" id="a-container">
                     <form class="form" id="login-form" name="login-form" method="POST" action="controller/login.php">
                         <h2 class="form_title title">Login</h2>
-                        <div id="login-status" class="w3-center w3-padding-8 error"><?php echo $loginmessage ?></div>
+                        <div id="login-status" class="w3-center w3-padding-8 error"><?php echo htmlentities($loginErrorMessage) ?></div>
                         <div>
                             <i class="fas fa-envelope"></i>
                             <input class="form__input" type="email" placeholder="Email" id="email" name="email" required>
@@ -125,7 +134,7 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
                         </div>
                         <div>
                             <i class="fas fa-envelope"></i>
-                            <input class="form__input" type="email" placeholder="Email" id="mail" name="mail" required> 
+                            <input class="form__input" type="email" placeholder="Email" id="mail" name="mail" required>
                         </div>
                         <div>
                             <i class="fas fa-eye-slash" id="reg_pass" onclick="togglePasswordVisibility(id,'pass')" style="cursor: pointer;"></i>
@@ -138,6 +147,7 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
                         <input type="submit" value="Register" id="register" name="register" class="form__button button">
                     </form>
                 </div>
+                <!-- Login / Registration Forms switch  containes to toggle -->
                 <div class="switch" id="switch-cnt">
                     <div class="switch__circle"></div>
                     <div class="switch__circle switch__circle--t"></div>
@@ -184,6 +194,6 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'error') {
             <p>Developed by <a href="" class="w3-hover-text-green">Sasank Tipparaju & Jaya Chandu</a></p>
         </footer>
     </div>
-</body>
+    </body>
 
 </html>

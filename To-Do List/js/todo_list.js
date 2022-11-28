@@ -114,7 +114,7 @@ function validateRegistrationForm() {
                     required: true,
                     minlength: 8,
                     maxlength: 15,
-                    pattern: /^^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,15}$/
+                    pattern: /^^(?=.*[0-9])(?=.*[#?!@$%^&*_])(?=.*[a-zA-Z])[a-zA-Z0-9#?!@$%^&*_]{8,15}$/
                 },
                 retype_pass: {
                     required: true,

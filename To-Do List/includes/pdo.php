@@ -1,10 +1,16 @@
 <?php
+/**
+ * @file - pdo.php
+ * file to establish connection to database server
+ */
 const DB_HOST = 'localhost';
 const DB_PORT = 3306;
 const DB_NAME = 'todo_list';
 const DB_USER = 'php';
 const DB_PASSWORD = 'phpdb';
-
+const DB_CONN_ERROR = "<b>Something went wrong with database connection</b>, Please contact admin with the error message as...: ";
+//Setting default time zone for the application in server !
+date_default_timezone_set('America/Chicago');
 function dbConnection()
 {
     $connString = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME;
@@ -18,9 +24,8 @@ function dbConnection()
         return  $databaseConnection;
     } catch (PDOException $e) {
         $message = $e->getMessage();
-        echo "<b>Something went wrong</b>, Please contact admin with the error message as...: ".$message;
+        echo DB_CONN_ERROR.$message;
     }
 }
 
-$pdo = dbConnection();
 

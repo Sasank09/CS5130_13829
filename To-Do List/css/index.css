@@ -1,7 +1,8 @@
 /*
 * Typewriter CSS reference: https://codepen.io/geoffgraham/pen/jrWwWM
-* Login/Registration form css template: https://www.youtube.com/watch?v=lA9yBNRQnxE&ab_channel=CodeCreative
+* Login/Registration toggle form css template: https://www.youtube.com/watch?v=lA9yBNRQnxE&ab_channel=CodeCreative
 * Text Fade in CSS styles: https://codepen.io/thenocturnalfey/pen/jOEjaZR
+* Loading Spinner Semi Transparent Reference: http://www.menucool.com/9499/CSS-loading-spinner-with-a-semi-transparent-background
 */
 
 
@@ -353,7 +354,7 @@ input.valid.success-alert {
 }
 
 
-/**http://www.menucool.com/9499/CSS-loading-spinner-with-a-semi-transparent-background*/
+/** Reference: http://www.menucool.com/9499/CSS-loading-spinner-with-a-semi-transparent-background*/
 #cover-spin {
     position: fixed;
     width: 100%;

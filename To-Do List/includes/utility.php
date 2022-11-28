@@ -1,14 +1,21 @@
 <?php
-
+require_once "pdo.php";
 /**
- * Required pdo.php once so that we can access the database.
+ * @file - utility.php
  * Utility file which contains the common functions and constants used for the application.
+ * Required pdo.php to run once so that we can access the database.
  */
 
-require_once "pdo.php";
 session_start();
 //All the constants defined here to be accessed across the files in application
-const USER_LOGIN_ERROR_MSG = "Invalid Username or Password";
+const ERROR_404_MSG = "Error:404 Bad Request, Something went wrong please try again properly.";
+const REGISTRATION_PAGE_MSG = "Please wait while we process your registration in 3 seconds...";
+const NEED_TO_LOGIN_MSG = "Please login first to access the application.. ";
+const REGISTRATION_FAIL_REDIRECT_MSG = "Regsitration is failed, redirecting to home page in 3seconds. Please try again...";
+const LOGIN_FAIL_REDIRECT_MSG = "Login is failed, redirecting to home page in 3seconds. Please try again...";
+const LOGIN_PAGE_MSG = "Please wait while we process your login request and redirect in 3 seconds...";
+const LOGOUT_PAGE_MSG = "Please wait while we log you out and redirect in 3 seconds";
+const INVALID_USER_CREDS = "Invalid Email or Password";
 const EMAIL_ALREADY_EXISTS_MSG = "Email already exists with us...";
 const EMAIL_AVAILABLE_TO_USE_MSG = "Email is available to use.";
 const EMAIL_INVALID_MSG = "Email is invalid, please use sample@domain.tld format.";
@@ -18,21 +25,16 @@ const TODO_UPDATE_SUCCESS_MSG = "Todo is Updated Successfully.";
 const TODO_UPDATE_FAIL_MSG = "Something went wrong, Todo is not updated, please try again.";
 const TODO_STATUS_UPDATE_SUCCESS_MSG = "Todo status is updated successfully.";
 const TODO_STATUS_UPDATE_FAIL_MSG = "Something went wrong, Todo status is not updated..";
-const REGISTRATION_PAGE_MSG = "Please wait while we process your registration in 3 seconds...";
-const REGISTRATION_FAIL_REDIRECT_MSG = "Regsitration is failed, redirecting to home page in 3seconds. Please try again...";
-const LOGIN_PAGE_MSG = "Please wait while we process your request and redirect in 3 seconds...";
-const LOGOUT_PAGE_MSG = "Please wait while we log you out and redirect in 3 seconds";
-const NO_TODOS_AVAILABLE = "No todo's are available as of now!!!..";
-const NO_TODOS_COMPLETED = "No todo's are completed as of now!!!..";
+const DELETE_TODO_SUCCESS_MSG=  "Todo status is deleted successfully.";
+const DELETE_TODO_FAIL_MSG = "Error: No Records found to delete, please try again properly";
+const NO_TODOS_AVAILABLE = "No todo's are available  to display..!!!";
+const NO_TODOS_COMPLETED = "No todo's are completed to display..!!!";
 //All locations stored as constants whilw we navigate through application
 const INDEX_PAGE_LOCATION = 'http://localhost/To-Do%20List/';
 const INDEX_LOGIN_PAGE_LOCATION = 'http://localhost/To-Do%20List/index.php#loginForm';
 const ALL_TODO_LIST_PHP_LOCATION = 'http://localhost/To-Do%20List/controller/all_todos.php';
-const VIEW_TODO_PHP_LOCATION = 'http://localhost/To-Do%20List/controller/view_todo.php';
-const REGISTRATION_PHP_LOCATION = 'http://localhost/To-Do%20List/controller/register.php';
-const LOGIN_PHP_LOCATION = 'http://localhost/To-Do%20List/controller/login.php';
 
-date_default_timezone_set('America/Chicago');
+
 //Common method to execute the query and communication with the database for CRUD operations
 function executeQuery($sql, $binded_params, $fetchMode)
 {
@@ -64,9 +66,6 @@ function getUserDetails($user_mail)
 
 
 
-
-
-
 // Get Head function common head/meta tags/css/js inside todos application, once user logged in
 function getHead()
 {
@@ -75,7 +74,7 @@ function getHead()
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>' . $pageTitle . '</title>
+    <title>' . htmlentities($pageTitle) . '</title>
 
     <style>
         body {
@@ -147,10 +146,13 @@ function getHead()
         }
     </style>
 
-    <!-- Bootstrap CSS -->
+    
+    <!-- Bootstrap CSS 5.2.2 Libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-    <!-- jQuery Libraries -->
+    
+    <!-- jQuery Libraries 3.6.1 Library with addtional validate method library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
         integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -189,7 +191,7 @@ function getHeader()
     $output = '<header class="py-2 mb-3 border-bottom bg-white ">
         <div class="d-flex flex-wrap justify-content-center container">
             <a href="all_todos.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <span class="fs-5">Todo List, Welcome ' . $username . '!! </span>
+                <span class="fs-5">Todo List, Welcome ' . htmlentities($username) . '!! </span>
             </a>
             <div class="nav nav-pills">
                 <div class="nav-item"><a href="all_todos.php" class="nav-link btn btn-primary " aria-current="page">Home</a></div> &nbsp;&nbsp;
@@ -214,52 +216,57 @@ function getFooter()
     echo $output;
 }
 
-
+//Input form elements function for creating / editing a record
 function getFormContent($result)
 {
-    $output = '             <div class="mb-3">
-    <label for="title" class="form-label">Title <sub><i>Max Characters allowed 100</i></sub></label>
-    <input type="text" class="form-control" id="title" name="title" placeholder="e.g. Create PPT for Web Applications Project" value="' . $result['title'] . '" maxlength="100" required>
-</div>
-<div class="mb-3">
-    <label for="description" class="form-label">Description</label>
-    <textarea class="form-control" id="description" name="description" rows="3">' . $result['description'] . '</textarea>
-</div>
-<div class="mb-3 row input-group">
-    <div class="col-6">
-        <label for="priority" class="form-label">Priority</label>
-        <select name="priority" id="priority" class="form-control">
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-            <option value="Low">Low</option>
-        </select>
+    $output = '<!-- Form Input Elements -->
+    <div class="mb-3">
+        <label for="title" class="form-label">Title <sub><i>Max Characters allowed 150</i></sub></label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="e.g. Create PPT for Web Applications Project" value="' . htmlentities($result['title']) . '" maxlength="150" required>
+    </div>  
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3">' . htmlentities($result['description']) . '</textarea>
     </div>
-    <div class="col-6">
-        <label for="category" class="form-label">Category</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="category" id="personal" value="Personal" checked>
-            <label class="form-check-label" for="personal">Personal</label>
+    <div class="mb-3 row input-group">
+        <div class="col-6">
+            <label for="priority" class="form-label">Priority</label>
+            <select name="priority" id="priority" class="form-control">
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Low">Low</option>
+            </select>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="category" id="work" value="Work">
-            <label class="form-check-label" for="work">Work</label>
+        <div class="col-6">
+            <label for="category" class="form-label">Category</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="category" id="personal" value="Personal" checked>
+                <label class="form-check-label" for="personal">Personal</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="category" id="work" value="Work">
+                <label class="form-check-label" for="work">Work</label>
+            </div>
         </div>
     </div>
-</div>
-<div class="mb-4 row input-group">
-    <div class="col-6">
-        <label for="dueDate" class="form-label">Due Date</label>
-        <input type="datetime-local" name="dueDate" id="dueDate" class="form-control" value="' . $result['due_date'] . '" min="' . date(" Y-m-d H:i", time()) . '" required>
-    </div>
-    <div class="col-6">
-        <label for="status" class="form-label">Status</label>
-        <select name="status" id="status" class="form-control">
-            <option value="Not Started">Not Started</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-        </select>
-    </div>
-</div>';
+    <div class="mb-4 row input-group">
+        <div class="col-6">
+            <label for="dueDate" class="form-label">Due Date</label>
+            <input type="datetime-local" name="dueDate" id="dueDate" class="form-control" value="' . htmlentities($result['due_date']) . '" min="' . date(" Y-m-d H:i", time()) . '" required>
+        </div>
+        <div class="col-6">
+            <label for="status" class="form-label">Status 
+            <span data-bs-toggle="tooltip" data-bs-title="Once the status is marked completed, it cannot be changed"><i class="bi bi-info-circle" style="color: red;" ></i></span>
+            
+            </label>
+            <select name="status" id="status" class="form-control">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+
+    </div>';
     echo $output;
 }
 
@@ -280,24 +287,24 @@ function textLimit($string, $limit)
 //Get Todo function - to display each todo in form of card
 function displayCard($todo)
 {
-    $isCompleted = $todo['status'] == "Completed" ? "checked" : "";
+    $isCompleted = htmlentities($todo['status']) == "Completed" ? "checked disabled" : "";
     $output = '<div class="card shadow-sm">
         <div class="card-body">
-            <h5 class="card-header">' . textLimit($todo['title'], 20) . '</h5>
+            <h5 class="card-header">' . htmlentities(textLimit($todo['title'], 20)) . '</h5>
             <div class="card-body">
                 <div class="card-subtitle"> 
-                    <small class="text-warning">' . $todo['status'] . '</small>
-                    <small class=" m-2 text-info">' . $todo['priority'] . '</small>
-                    <small class=" m-2 text-muted">' . $todo['category'] . '</small>
+                    <small class="text-warning">' . htmlentities($todo['status']) . '</small>
+                    <small class=" m-2 text-info">' . htmlentities($todo['priority']) . '</small>
+                    <small class=" m-2 text-muted">' . htmlentities($todo['category']) . '</small>
                 </div>
-                <p class="card-text">' . textLimit($todo['description'], 50) . '</p>
+                <p class="card-text">' . htmlentities(textLimit($todo['description'], 50)) . '</p>
                 <small class="card-text text-muted">Complete By: ' . $todo['due_date'] . '</small>
             </div>
             <div class="card-footer bg-transparent">
-                <a href="view_todo.php?id=' . $todo['todo_id'] . '" class="btn btn-sm btn-outline-secondary">View</a>
-                <a href="edit_todo.php?id=' . $todo['todo_id'] . '" class="btn btn-sm btn-outline-secondary">Edit</a>
-               <span class="form-check form-switch float-end">
-                    <input class="form-check-input" type="checkbox" role="switch" id="' . $todo['todo_id'] . '" name="markComplete" onclick="updateStatus(id) "' . $isCompleted . '>
+                <a href="view_todo.php?id=' . htmlentities($todo['todo_id']) . '" class="btn btn-sm btn-outline-secondary">View</a>
+                <a href="edit_todo.php?id=' . htmlentities($todo['todo_id']) . '" class="btn btn-sm btn-outline-secondary">Edit</a>
+               <span class="form-check form-switch float-end text-sm-start" data-bs-toggle="tooltip" data-bs-title="Once the status is marked completed, it cannot be changed">
+                    <input class="form-check-input" type="checkbox" role="switch" id="' . htmlentities($todo['todo_id']) . '" name="markComplete" onclick="updateStatus(id)"' . $isCompleted . '>
                     <small class="form-check-label" for="markComplete">Mark Done</small>
                 </span>
             </div>
@@ -307,9 +314,12 @@ function displayCard($todo)
     return $output;
 }
 
-function getFormButtons($id)
+//Delete button with confirmation modal dialog used in view/edit_todo pages
+function getDeleteButton($id)
 {
-    $output = '                                <!-- Button trigger modal -->
+    $output = ' 
+    <a href="all_todos.php" id="cancel" name="cancel" class="btn btn-secondary">Go Back</a>
+    <!-- Button trigger modal -->
     <input type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" value="Delete">
     <!-- Modal -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
@@ -324,12 +334,11 @@ function getFormButtons($id)
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a href="delete_todo.php?id=' . $id . ' " class="btn btn-danger">Delete</a>
+                    <a href="delete_todo.php?id=' . htmlentities($id) . ' " class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
-    </div>
-    <a href="all_todos.php" id="cancel" name="cancel" class="btn float-end btn-secondary">Go Back</a>';
+    </div>';
     echo $output;
 }
 
@@ -337,7 +346,6 @@ function getFormButtons($id)
 // Dynamic Title function for each webpage
 function dynamicTitle()
 {
-    global $conn;
     $filename = basename($_SERVER["PHP_SELF"]);
     $pageTitle = "";
     switch ($filename) {
@@ -358,7 +366,7 @@ function dynamicTitle()
             break;
 
         case 'view_todo.php':
-            $pageTitle = "View";
+            $pageTitle = "View Todo List";
             break;
 
         default:
