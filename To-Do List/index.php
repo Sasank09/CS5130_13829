@@ -9,7 +9,7 @@ session_start();
 $loginErrorMessage = "";
 // checking login session
 if (isset($_SESSION['login_status']) && $_SESSION['login_status'] === 'FAIL') {
-    $loginErrorMessage = INVALID_USER_CREDS;
+    $loginErrorMessage = INVALID_USER_CREDS_MSG;
     unset($_SESSION['login_status']);
 } elseif (isset($_SESSION['user_mail'])  && isset($_SESSION['login_status']) &&  !empty($_SESSION['user_mail']) && $_SESSION['login_status'] === 'SUCCESS') {
     $loginErrorMessage = "";

@@ -15,19 +15,25 @@ if (isset($_SESSION['user_mail']) && isset($_SESSION['login_status']) && $_SESSI
         $mail = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
         $pass = htmlentities($_POST['passwd']);
         if ($mail && $pass) {
-            $sql = "SELECT email, fullname from users WHERE email = :mailId AND password = :password";
+            $sql = "SELECT email, password, fullname from users WHERE email = :mailId";
             $bindParams = array(
-                "mailId" => $mail,
-                "password" => hash("sha512", $pass)
+                "mailId" => $mail
             );
             $row = executeQuery($sql, $bindParams, "ONE");
+            $valid_password = password_verify($pass,$row['password']);
             if ($row) {
-                $_SESSION['login_status'] = 'SUCCESS';
-                $_SESSION['user_mail'] = $mail;
-                $_SESSION['user_fullname'] = $row['fullname'];
-                //clearing post variable by reinstialising after successful login
-                $_POST = array();
-                header("refresh:2; url=" . ALL_TODO_LIST_PHP_LOCATION);
+                if($valid_password) {
+                    $_SESSION['login_status'] = 'SUCCESS';
+                    $_SESSION['user_mail'] = $mail;
+                    $_SESSION['user_fullname'] = $row['fullname'];
+                    //clearing post variable by reinstialising after successful login
+                    $_POST = array();
+                    header("refresh:2; url=" . ALL_TODO_LIST_PHP_LOCATION);
+                }else {
+                    $_SESSION['login_status'] = 'FAIL';
+                    $msg = INVALID_PASSWORD_MSG;
+                    header("refresh:2; url=" . INDEX_LOGIN_PAGE_LOCATION);     
+                }
             } else {
                 $_SESSION['login_status'] = 'FAIL';
                 $msg = LOGIN_FAIL_REDIRECT_MSG;
