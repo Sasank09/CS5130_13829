@@ -38,11 +38,11 @@ if (isset($_SESSION['user_mail']) && isset($_SESSION['login_status']) && !empty(
             }
 
         } else {
-            $msg = ERROR_404_MSG;
+            $msg = ERROR_404_MSG.' '.INVALID_PARAM_MSG;
             header("refresh:2;url=" . ALL_TODO_LIST_PHP_LOCATION);
         }
     } else {
-        $msg = ERROR_404_MSG;
+        $msg = ERROR_404_MSG.' '.INVALID_PARAM_MSG;
         header("refresh:2;url=" . ALL_TODO_LIST_PHP_LOCATION);
     }
 } else {
@@ -60,7 +60,9 @@ if (isset($_SESSION['user_mail']) && isset($_SESSION['login_status']) && !empty(
 <body>
     <?php getHeader(); ?>
     <div id="deleteContainer" class="container m-6">
-        <div class="bg-info m-auto p-5 fw-bold fs-4"><?php echo $msg; ?> </div>
+        <div class="bg-info m-auto w-75 text-center p-5 fw-bold fs-4">
+            <?php echo htmlentities($msg); ?>
+        </div>
     </div>
     <script>
         $(document).ready(function() {

@@ -61,7 +61,7 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
             <div class="accordion-item">
                 <h2 class="accordion-header" id="warning_todos">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <p class="text-danger fw-bold fs-6"><span class="badge text-bg-secondary"><?php echo $warning_tasks_count; ?></span>&nbsp;Warning, Due Tasks</p>
+                        <p class="text-danger fw-bold fs-6"><span class="badge text-bg-secondary"><?php echo htmlentities($warning_tasks_count); ?></span>&nbsp;Warning, Due Tasks</p>
                     </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="warning_todos" data-bs-parent="#todosList">
@@ -78,7 +78,7 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
             <div class="accordion-item">
                 <h2 class="accordion-header" id="today_todos">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        <p class="text-warning fw-bold fs-6"><span class="badge text-bg-secondary"><?php echo $today_tasks_count; ?></span>&nbsp;Today's Tasks</p>
+                        <p class="text-warning fw-bold fs-6"><span class="badge text-bg-secondary"><?php echo htmlentities($today_tasks_count); ?></span>&nbsp;Today's Tasks</p>
                     </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="today_todos" data-bs-parent="#todosList">
@@ -95,7 +95,7 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
             <div class="accordion-item">
                 <h2 class="accordion-header" id="upcoming_todos">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        <p class="text-primary fw-bold fs-6"><span class="badge text-bg-secondary"><?php echo $upcoming_tasks_count; ?></span>&nbsp;Upcoming Tasks</p>
+                        <p class="text-primary fw-bold fs-6"><span class="badge text-bg-secondary"><?php echo htmlentities($upcoming_tasks_count); ?></span>&nbsp;Upcoming Tasks</p>
                     </button>
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="upcoming_todos" data-bs-parent="#todosList">
@@ -112,7 +112,7 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
             <div class="accordion-item">
                 <h2 class="accordion-header" id="completed_todos">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
-                        <p class="text-success fw-bold fs-6"><span class="badge text-bg-secondary"><?php echo $completed_tasks_count; ?></span>&nbsp;Completed Tasks</p>
+                        <p class="text-success fw-bold fs-6"><span class="badge text-bg-secondary"><?php echo htmlentities($completed_tasks_count); ?></span>&nbsp;Completed Tasks</p>
                     </button>
                 </h2>
                 <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="completed_todos" data-bs-parent="#todosList">
@@ -178,7 +178,7 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
             var json = {
                 "id": todoId,
                 "markComplete": "Clicked"
-            }
+            };
             $.post("crud_todos.php", json, function(response) {
                 var data = JSON.parse(response);
                 if (data.status == "Success") {

@@ -8,9 +8,9 @@ require_once "../includes/utility.php";
  */
 session_start();
 $msg = '';
+$response = array();
 if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'SUCCESS') {
     if (isset($_POST['addTodo']) && $_POST['addTodo'] = 'Add Todo' && isset($_POST['title']) && $_POST['title']) {
-        $response = array();
         try {
             $title = htmlentities($_POST['title']);
             $description = htmlentities($_POST['description']);
@@ -62,7 +62,6 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'SUCCESS') 
             echo json_encode($response);
         }
     } elseif (isset($_POST['updateTodo']) && $_POST['updateTodo'] = 'Update Todo' && isset($_POST['todoId']) && isset($_POST['title'])) {
-        $response = array();
         try {
             $id = htmlentities($_POST['todoId']);
             $title = htmlentities($_POST['title']);
@@ -151,19 +150,18 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'SUCCESS') 
             } else {
                 $response = array(
                     "status" => "Fail",
-                    "message" => ERROR_404_MSG.TODO_STATUS_UPDATE_FAIL_MSG
+                    "message" => ERROR_404_MSG . TODO_STATUS_UPDATE_FAIL_MSG
                 );
             }
-
             echo json_encode($response);
         } catch (Exception $e) {
             $response = array(
                 "status" => "Fail",
-                "message" => $e->getMessage()
+                "message" => ERROR_404_MSG . 'Exception: ' . $e->getMessage()
             );
             echo json_encode($response);
         }
-    }else {
+    } else {
         header("refresh:0;url=" . ALL_TODO_LIST_PHP_LOCATION);
     }
 } else {

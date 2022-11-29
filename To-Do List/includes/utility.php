@@ -8,18 +8,20 @@ require_once "pdo.php";
 
 session_start();
 //All the constants defined here to be accessed across the files in application
-const ERROR_404_MSG = "Error:404 Bad Request, Something went wrong please try again properly.";
+const ERROR_404_MSG = "Error:404 Bad Request...";
 const REGISTRATION_PAGE_MSG = "Please wait while we process your registration in 3 seconds...";
 const NEED_TO_LOGIN_MSG = "Please login first to access the application.. ";
 const REGISTRATION_FAIL_REDIRECT_MSG = "Regsitration is failed, redirecting to home page in 3seconds. Please try again...";
 const LOGIN_FAIL_REDIRECT_MSG = "Login is failed, redirecting to home page in 3seconds. Please try again...";
 const LOGIN_PAGE_MSG = "Please wait while we process your login request and redirect in 3 seconds...";
 const LOGOUT_PAGE_MSG = "Please wait while we log you out and redirect in 3 seconds";
-const INVALID_USER_CREDS_MSG = "Invalid Credentials, please try again";
+const INVALID_USER_CREDS_MSG = "Invalid Credentials, please try again. ";
 const INVALID_PASSWORD_MSG = "Invalid Password, please try again";
 const EMAIL_ALREADY_EXISTS_MSG = "Email already exists with us...";
 const EMAIL_AVAILABLE_TO_USE_MSG = "Email is available to use.";
 const EMAIL_INVALID_MSG = "Email is invalid, please use sample@domain.tld format.";
+const INVALID_PARAM_MSG = "Invalid parameter";
+const INVALID_ID_NO_TODO_MSG = "Invalid Id, No Todo is available";
 const TODO_INSERT_SUCCESS_MSG = "Todo is created Successfully.";
 const TODO_INSERT_FAIL_MSG = "Something went wrong, Todo is not created, please try again.";
 const TODO_UPDATE_SUCCESS_MSG = "Todo is Updated Successfully.";

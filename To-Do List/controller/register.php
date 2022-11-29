@@ -73,10 +73,8 @@ if (isset($_SESSION['user_mail']) && isset($_SESSION['login_status']) && $_SESSI
 
 <body>
     <?php getHeader(); ?>
-    <div class="bg-warning m-auto w-75 p-3 fw-bold fs-4">
-        <?php
-        echo $msg;
-        ?>
+    <div class="bg-warning m-auto w-75 text-center p-3 fw-bold fs-4">
+        <?php echo htmlentities($msg); ?>
     </div>
     <?php getFooter(); ?>
     <script>

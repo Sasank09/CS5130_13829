@@ -20,13 +20,16 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
                 "uid" => $userDetails['user_id'],
             );
             $result = executeQuery($sql, $param, "ONE");
+            if(!$result) {
+                $msg = INVALID_ID_NO_TODO_MSG;
+            }
             $pageTitle = dynamicTitle();
             setcookie('LastVisitedPage', $pageTitle, time() + 86400, "/");
         } else {
-            $msg = ERROR_404_MSG;
+            $msg = ERROR_404_MSG.' '.INVALID_PARAM_MSG;
         }
     } else {
-        $msg = ERROR_404_MSG;
+        $msg = ERROR_404_MSG.' '.INVALID_PARAM_MSG;
     }
 } else {
     $msg = NEED_TO_LOGIN_MSG;
@@ -63,10 +66,8 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
                                 </div>
                             <?php
                             } else { ?>
-                                <div class="bg-danger m-auto p-5 fw-bold fs-4">
-                                    <?php
-                                    echo $msg;
-                                    ?>
+                                <div class="bg-danger m-auto w-75 text-center p-5 fw-bold fs-4"> 
+                                    <?php echo htmlentities($msg); ?>
                                 </div>
                             <?php
                             }

@@ -19,24 +19,28 @@ $_SESSION = array();
 
 // Finally, destroy the session.
 session_destroy();
-$msg= LOGOUT_PAGE_MSG;
-Header("Refresh:2;url=".INDEX_PAGE_LOCATION);
+$msg = LOGOUT_PAGE_MSG;
+Header("Refresh:2;url=" . INDEX_PAGE_LOCATION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <?php getHead(); ?>
 </head>
+
 <body>
-    <?php getHeader();
-        echo '<div class="fs-4 fw-bold text-white bg-info">'.$msg.'</div>';
-    ?>
+    <?php getHeader(); ?>
+    <div class="bg-warning m-auto w-75 text-center p-3 fw-bold fs-4">
+        <?php echo htmlentities($msg); ?>
+    </div>
     <script>
         $(document).ready(function() {
             $("#cover-spin").show().delay(1990).fadeOut();
         });
     </script>
 </body>
+
 </html>
 <?php
 $_POST = array();
