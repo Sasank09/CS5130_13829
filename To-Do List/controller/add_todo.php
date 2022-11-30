@@ -45,7 +45,7 @@ if (!(isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($
                                 </div>
                             <?php
                             } else { ?>
-                                <div class="bg-danger m-auto w-75 p-3 fw-bold fs-4"> <?php echo htmlentities(ERROR_404_MSG); ?> </div>
+                                <div class="bg-danger m-auto w-75 p-3 fw-bold fs-4"> <?php echo htmlentities(NEED_TO_LOGIN_MSG); ?> </div>
                             <?php
                             }
                             ?>
@@ -62,7 +62,7 @@ if (!(isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         $(document).ready(function() {
-            $("#cover-spin").show().delay(500).fadeOut();
+            $("#cover-spin").show().delay(700).fadeOut();
             //fucntion to perform submit of add_todo_form
             $("#add_todo_form").on("submit", function(event) {
                 event.preventDefault();
