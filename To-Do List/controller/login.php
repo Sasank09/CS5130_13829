@@ -26,21 +26,25 @@ if (isset($_SESSION['user_mail']) && isset($_SESSION['login_status']) && $_SESSI
                     $_SESSION['login_status'] = 'SUCCESS';
                     $_SESSION['user_mail'] = $mail;
                     $_SESSION['user_fullname'] = $row['fullname'];
+                    setcookie('login_time', date(" Y-m-d H:i:s", time()) ,time()+86400,'/');
                     //clearing post variable by reinstialising after successful login
                     $_POST = array();
                     header("refresh:2; url=" . ALL_TODO_LIST_PHP_LOCATION);
                 } else {
                     $_SESSION['login_status'] = 'FAIL';
+                    setcookie('mail',$mail,time()+10,'/');
                     $msg = INVALID_PASSWORD_MSG;
                     header("refresh:2; url=" . INDEX_LOGIN_PAGE_LOCATION);
                 }
             } else {
                 $_SESSION['login_status'] = 'FAIL';
+                setcookie('mail',$mail,time()+10,'/');
                 $msg = LOGIN_FAIL_REDIRECT_MSG;
                 header("refresh:2; url=" . INDEX_LOGIN_PAGE_LOCATION);
             }
         } else {
             $msg = LOGIN_FAIL_REDIRECT_MSG;
+            setcookie('mail',$mail,time()+10,'/');
             $_SESSION['login_status'] = 'FAIL';
             header("refresh:2; url=" . INDEX_LOGIN_PAGE_LOCATION);
         }

@@ -9,9 +9,6 @@ include "../includes/utility.php";
 session_start();
 if (!(isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_SESSION['login_status']) && $_SESSION['login_status'] === 'SUCCESS')) {
     header("refresh:1;url=" . INDEX_PAGE_LOCATION);
-} else {
-    $pageTitle = dynamicTitle();
-    setcookie('LastVisitedPage', $pageTitle, time() + 86400, "/");
 }
 ?>
 <!DOCTYPE html>

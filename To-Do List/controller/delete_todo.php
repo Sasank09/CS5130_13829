@@ -20,9 +20,6 @@ if (isset($_SESSION['user_mail']) && isset($_SESSION['login_status']) && !empty(
             );
             $result = executeQuery($sql, $param, "ONE");
             if($result) {
-                $pageTitle = dynamicTitle();
-                setcookie('LastVisitedPage', $pageTitle, time() + 86400, "/");
-                setcookie('RecentlyDeletedTodo', $result['title'], time() + 86400, "/");
                 $dsql = "DELETE FROM todos WHERE user_id= :user_id AND todo_id= :id";
                 $params = array('user_id' => $userDetails['user_id'], 'id' => $todoId );
                 if(executeQuery($dsql, $params, "NONE")) {

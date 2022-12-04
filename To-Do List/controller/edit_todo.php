@@ -23,8 +23,6 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
             if(!$result) {
                 $msg = INVALID_ID_NO_TODO_MSG;
             }
-            $pageTitle = dynamicTitle();
-            setcookie('LastVisitedPage', $pageTitle, time() + 86400, "/");
         } else {
             $msg = ERROR_404_MSG.' '.INVALID_PARAM_MSG;
         }
@@ -81,16 +79,11 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
     <?php getFooter(); ?>
     <script type="text/javascript">
         "use strict";
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         //On DOM ready logic
         $(document).ready(function() {
             $("#cover-spin").show().delay(500).fadeOut();
             //set values for dropdown input elements
             $('#status').val("<?php echo $result['status']; ?>");
-            if ($('#status').val() === "Completed") {
-                $("#status").attr('disabled', 'disabled');
-            }
             $('#priority').val("<?php echo $result['priority'] ?>");
             $('input:radio[name="category"]').filter('[value="<?php echo $result['category']; ?>"]').attr('checked', true);
 
@@ -114,7 +107,7 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
                             "<div class='alert alert-danger'>" + sanitizeHTML(data.message) + "</div>"
                         ).delay(1000).fadeOut();
                     }
-                    $("#cover-spin").delay(500).fadeOut();
+                    $("#cover-spin").delay(700).fadeOut();
                     $("#edit_todo_form")[0].reset();
                 }).fail(function() {
                     alert("error");

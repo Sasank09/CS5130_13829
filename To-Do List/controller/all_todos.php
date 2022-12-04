@@ -10,16 +10,12 @@ require_once "../includes/utility.php";
 session_start();
 if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_SESSION['login_status']) && $_SESSION['login_status']  === 'SUCCESS') {
     $currentUserData = getUserDetails(htmlentities($_SESSION['user_mail']));
-    $currentDate = date("Y-m-d", time());
-    $currentTime = date("H:i:s", time());
     if ($currentUserData['user_id'] != '') {
         $sql = "SELECT * FROM todos WHERE user_id =:uid ORDER BY due_date, priority ASC";
         $param = array(
             "uid" => $currentUserData['user_id'],
         );
         $all_todos = executeQuery($sql, $param, "ALL");
-        $pageTitle = dynamicTitle();
-        setcookie('LastVisitedPage', $pageTitle, time() + 86400, "/");
     }
 } else {
     header("refresh:1;url=" . INDEX_PAGE_LOCATION);
@@ -39,6 +35,9 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
         <p class='text-center'><a href='' class='text-dark fw-bold fs-4'>Your Todos Dashboard</a></p>
         <?php
         if ($_SESSION['login_status'] === 'SUCCESS') {
+            //get current date and time to categorize the todos
+            $currentDate = date("Y-m-d", time());
+            $currentTime = date("H:i:s", time());
             foreach ($all_todos as $todo) {
                 $str = strtotime($todo['due_date']);
                 $todo_date =  date("Y-m-d", $str);
@@ -128,43 +127,16 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
                     </div>
                 </div>
             </div>
-
-            <table class="table caption-top m-auto w-75 p-4 mb-5 table-hover table-light table-striped">
-                <caption class="text-danger fs-3 fw-bold">Most Recent Activity in last 24 hours - (Based on Cookies)</caption>
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">Last Visited Page</th>
-                        <td><?php echo htmlentities($_COOKIE['LastVisitedPage']) ?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Last Created Todo</th>
-                        <td><?php echo htmlentities($_COOKIE['RecentlyCreatedTodo']) ?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Last Viewed Todo</th>
-                        <td><?php echo htmlentities($_COOKIE['RecentlyViewedPage']) ?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Last Updated Todo</th>
-                        <td><?php echo htmlentities($_COOKIE['RecentlyUpdatedTodo']) ?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Last Deleted Todo</th>
-                        <td><?php echo htmlentities($_COOKIE['RecentlyDeletedTodo']) ?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Last Completed Todo</th>
-                        <td><?php echo htmlentities($_COOKIE['RecentlyCompletedTodo']) ?></td>
-                    </tr>
-
-                </tbody>
-            </table>
+            <div class="toast align-items-center text-bg-primary position-fixed bottom-0 end-0 p-2 mb-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="toast-header">
+                    <small class="me-auto text-dark">Logged in Time <sub>cookie</sub></small>
+                    <sub class="text-dark"><?php echo htmlentities($_COOKIE['login_time']) ?></sub>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <small class="toast-body">
+                    you have been logged in for:<span id="login_duration"></span>
+                </small>
+            </div>
         <?php
         } else { ?>
             <div class="bg-danger m-auto w-75 text-center p-3 fw-bold fs-4">
@@ -177,9 +149,7 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
     <?php getFooter(); ?>
     <script type="text/javascript">
         "use strict";
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
+        //this function is to mark complete the todos/task on checking in display cards- used onclick event in html element
         function updateStatus(id) {
             var todoId = sanitizeHTML(id);
             $("#cover-spin").show();
@@ -198,16 +168,42 @@ if (isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($_S
                         "<div class='alert alert-danger'>" + sanitizeHTML(data.message) + "</div>"
                     );
                 }
-                $("#cover-spin").delay(500).fadeOut();
+                $("#cover-spin").delay(700).fadeOut();
                 setTimeout(function() {
                     window.location.reload();
-                }, 900);
+                }, 1000);
             }).fail(function() {
                 alert("error");
             });
         }
+
         $(document).ready(function() {
             $("#cover-spin").show().delay(500).fadeOut();
+            //to display tooltip on status field by boostrap trigger js
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            //to display the toast of login duration
+            let myAlert = document.querySelectorAll('.toast')[0];
+            if (myAlert) {
+                let bsAlert = new bootstrap.Toast(myAlert);
+                bsAlert.show();
+            }
+            //to show the login time duration
+            let dt1 = new Date("<?php echo date("F j Y H:i:s ", strtotime(htmlentities($_COOKIE['login_time']))); ?>");
+            let dt2 = new Date("<?php echo date("F j Y H:i:s", time() - 1); ?>");
+
+            function diff_minutes() {
+                dt2.setSeconds(dt2.getSeconds() + 1);
+                $("#login_duration").text('');
+                let diff = (dt2.getTime() - dt1.getTime()) / 1000; //seconds
+                let diffHrs = Math.floor((diff % 86400) / 3600); // hours
+                let diffMins = Math.floor(((diff % 86400) % 3600) / 60); // minutes
+                let diffSec = Math.round((((diff % 86400) % 3600) % 3600) % 60); // seconds
+                let difference = " " + diffHrs + " hr, " + diffMins + " min " + diffSec + " sec";
+                $("#login_duration").text(difference);
+
+            }
+            setInterval(diff_minutes, 1000);
         });
     </script>
 </body>

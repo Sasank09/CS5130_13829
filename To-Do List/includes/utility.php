@@ -21,21 +21,22 @@ const EMAIL_ALREADY_EXISTS_MSG = "Email already exists with us...";
 const EMAIL_AVAILABLE_TO_USE_MSG = "Email is available to use.";
 const EMAIL_INVALID_MSG = "Email is invalid, please use sample@domain.tld format.";
 const INVALID_PARAM_MSG = "Invalid parameter";
-const INVALID_ID_NO_TODO_MSG = "Invalid Id, No Todo is available";
+const INVALID_ID_NO_TODO_MSG = "Invalid Id, No Todo is available or you don't have access to it";
 const TODO_INSERT_SUCCESS_MSG = "Todo is created Successfully.";
 const TODO_INSERT_FAIL_MSG = "Something went wrong, Todo is not created, please try again.";
 const TODO_UPDATE_SUCCESS_MSG = "Todo is Updated Successfully.";
 const TODO_UPDATE_FAIL_MSG = "Something went wrong, Todo is not updated, please try again.";
 const TODO_STATUS_UPDATE_SUCCESS_MSG = "Todo status is updated successfully.";
 const TODO_STATUS_UPDATE_FAIL_MSG = "Something went wrong, Todo status is not updated..";
-const DELETE_TODO_SUCCESS_MSG=  "Todo record is deleted successfully.";
-const DELETE_TODO_FAIL_MSG = "Error: No Records found to delete, please try again properly";
+const DELETE_TODO_SUCCESS_MSG =  "Todo record is deleted successfully.";
+const DELETE_TODO_FAIL_MSG = "Error: No Records found to delete or you don't have access to it, please try again properly";
 const NO_TODOS_AVAILABLE = "No todo's are available  to display..!!!";
 const NO_TODOS_COMPLETED = "No todo's are completed to display..!!!";
 //All locations stored as constants whilw we navigate through application
 const INDEX_PAGE_LOCATION = 'http://localhost/To-Do%20List/';
 const INDEX_LOGIN_PAGE_LOCATION = 'http://localhost/To-Do%20List/index.php#loginForm';
 const ALL_TODO_LIST_PHP_LOCATION = 'http://localhost/To-Do%20List/controller/all_todos.php';
+
 
 
 //Common method to execute the query and communication with the database for CRUD operations
@@ -222,6 +223,9 @@ function getFooter()
 //Input form elements function for creating / editing a record
 function getFormContent($result)
 {
+    $mindate = date("Y-m-d");
+    $mintime = date("h:i");
+    $min = $mindate . "T" . $mintime;
     $output = '<!-- Form Input Elements -->
     <div class="mb-3">
         <label for="title" class="form-label">Title <sub><i>Max Characters allowed 150</i></sub></label>
@@ -255,13 +259,10 @@ function getFormContent($result)
     <div class="mb-4 row input-group">
         <div class="col-6">
             <label for="dueDate" class="form-label">Due Date</label>
-            <input type="datetime-local" name="dueDate" id="dueDate" class="form-control" value="' . htmlentities($result['due_date']) . '" min="' . date(" Y-m-d H:i", time()) . '" required>
+            <input type="datetime-local" name="dueDate" id="dueDate" class="form-control" value="' . htmlentities($result['due_date']) . '" min="' . htmlentities($min) . '" required>
         </div>
         <div class="col-6">
-            <label for="status" class="form-label">Status 
-            <span data-bs-toggle="tooltip" data-bs-title="Once the status is marked completed, it cannot be changed"><i class="bi bi-info-circle" style="color: red;" ></i></span>
-            
-            </label>
+            <label for="status" class="form-label">Status </label>
             <select name="status" id="status" class="form-control">
                 <option value="Not Started">Not Started</option>
                 <option value="In Progress">In Progress</option>
@@ -290,7 +291,7 @@ function textLimit($string, $limit)
 //Get Todo function - to display each todo in form of card
 function displayCard($todo)
 {
-    $isCompleted = htmlentities($todo['status']) == "Completed" ? "checked disabled" : "";
+    $isCompleted = htmlentities($todo['status']) == "Completed" ? "checked" : "";
     $output = '<div class="card shadow-sm">
         <div class="card-body">
             <h5 class="card-header">' . htmlentities(textLimit($todo['title'], 20)) . '</h5>
@@ -301,13 +302,13 @@ function displayCard($todo)
                     <small class=" m-2 text-muted">' . htmlentities($todo['category']) . '</small>
                 </div>
                 <p class="card-text">' . htmlentities(textLimit($todo['description'], 50)) . '</p>
-                <small class="card-text text-muted">Complete By: ' . $todo['due_date'] . '</small>
+                <sub class="card-text text-muted">Complete By: ' . date("F jS, Y e h:i A", strtotime(htmlentities($todo['due_date']))) . '</sub>
             </div>
             <div class="card-footer bg-transparent">
                 <a href="view_todo.php?id=' . htmlentities($todo['todo_id']) . '" class="btn btn-sm btn-outline-secondary">View</a>
                 <a href="edit_todo.php?id=' . htmlentities($todo['todo_id']) . '" class="btn btn-sm btn-outline-secondary">Edit</a>
-               <span class="form-check form-switch float-end text-sm-start" data-bs-toggle="tooltip" data-bs-title="Once the status is marked completed, it cannot be changed">
-                    <input class="form-check-input" type="checkbox" role="switch" id="' . htmlentities($todo['todo_id']) . '" name="markComplete" onclick="updateStatus(id)"' . $isCompleted . '>
+               <span class="form-check form-switch float-end text-sm-start">
+                    <input class="form-check-input" type="checkbox" role="switch" id="' . htmlentities($todo['todo_id']) . '" name="markComplete" onclick="updateStatus(id)"' . $isCompleted . ' style="cursor:pointer;">
                     <small class="form-check-label" for="markComplete">Mark Done</small>
                 </span>
             </div>

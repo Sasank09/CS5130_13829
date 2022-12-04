@@ -1,15 +1,20 @@
 <?php
+$lifetime=7200;
+session_set_cookie_params($lifetime);
 require_once "includes/utility.php";
 /**
  * @file index.php
  * Landing page for users to login/register and about basic info.
  * requires utility.php to run database and common code for the application.
  */
+//Setting session_max lifespan for 2 hours
 session_start();
 $loginErrorMessage = "";
 // checking login session
 if (isset($_SESSION['login_status']) && $_SESSION['login_status'] === 'FAIL') {
     $loginErrorMessage = INVALID_USER_CREDS_MSG;
+    $mail = isset($_COOKIE['mail']) ? $_COOKIE['mail'] :'';
+    setcookie('mail','', time()-1);
     unset($_SESSION['login_status']);
 } elseif (isset($_SESSION['user_mail'])  && isset($_SESSION['login_status']) &&  !empty($_SESSION['user_mail']) && $_SESSION['login_status'] === 'SUCCESS') {
     $loginErrorMessage = "";
@@ -115,7 +120,7 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] === 'FAIL') {
                         <div id="login-status" class="w3-center w3-padding-8 error"><?php echo htmlentities($loginErrorMessage) ?></div>
                         <div>
                             <i class="fas fa-envelope"></i>
-                            <input class="form__input" type="email" placeholder="Email" id="email" name="email" required>
+                            <input class="form__input" type="email" placeholder="Email" id="email" name="email" value="<?php echo htmlentities($mail) ?>" required>
                         </div>
                         <div>
                             <i class="fas fa-eye-slash" id="log_pass" onclick="togglePasswordVisibility(id,'passwd')" style="cursor: pointer;"></i>

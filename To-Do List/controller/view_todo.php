@@ -22,9 +22,6 @@ if (isset($_SESSION['user_mail']) && isset($_SESSION['login_status']) && !empty(
             if (!$result) {
                 $msg = INVALID_ID_NO_TODO_MSG;
             }
-            $pageTitle = dynamicTitle();
-            setcookie('LastVisitedPage', $pageTitle, time() + 86400, "/");
-            setcookie('RecentlyViewedPage', $result['title'], time() + 86400, "/");
         } else {
             $msg = ERROR_404_MSG . ' ' . INVALID_PARAM_MSG;
         }
@@ -82,7 +79,7 @@ if (isset($_SESSION['user_mail']) && isset($_SESSION['login_status']) && !empty(
                         <label for="duedate" class="fs-5 text-seoncdary fw-bold">Complete By</label>
                     </div>
                     <div class="col-10">
-                        <output name="duedate" class="fs-6"><?php echo htmlentities($result['due_date']); ?></output>
+                        <output name="duedate" class="fs-6"><?php echo date("F jS, Y e h:i A", strtotime(htmlentities($result['due_date']))); ?></output>
                     </div>
                 </div>
                 <div class="m-2 row">

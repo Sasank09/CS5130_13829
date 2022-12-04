@@ -40,6 +40,7 @@ if (isset($_SESSION['user_mail']) && isset($_SESSION['login_status']) && $_SESSI
                     $_SESSION['user_mail'] = $mail;
                     $_SESSION['user_fullname'] = $fullname;
                     $_SESSION['login_status'] = "SUCCESS";
+                    setcookie('login_time', date(" Y-m-d H:i:s", time()) ,time()+86400,'/');
                     //clearing post variable by reinstialising after successful creation
                     $_POST = array();
                     header("refresh:2; url=" . ALL_TODO_LIST_PHP_LOCATION);

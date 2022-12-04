@@ -34,8 +34,6 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'SUCCESS') 
                 $res = executeQuery($insertQuery, $insertBindParams, "NONE");
 
                 if ($res) {
-                    //setting cookie for recently created todo
-                    setcookie("RecentlyCreatedTodo", $title, time() + 86400, "/");
                     $response = array(
                         "status" => "Success",
                         "message" => TODO_INSERT_SUCCESS_MSG
@@ -86,10 +84,6 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'SUCCESS') 
                 );
                 $res = executeQuery($updateQuery, $updateParams, "NONE");
                 if ($res) {
-                    setcookie("RecentlyUpdatedTodo", $title, time() + 86400, "/");
-                    if ($status === 'Completed') {
-                        setcookie("RecentlyCompletedTodo", $title, time() + 86400, "/");
-                    }
                     $response = array(
                         "status" => "Success",
                         "message" => TODO_UPDATE_SUCCESS_MSG
@@ -126,9 +120,9 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'SUCCESS') 
             );
             $row = executeQuery($sql, $params, "ONE");
             $title = $row['title'];
-            if ($row && $row['status'] != 'Completed') {
+            if ($row) {
                 $usql = "UPDATE todos SET status =:stat WHERE todo_id =:id AND user_id =:uid";
-                $status = "Completed";
+                $status =  $row['status'] != 'Completed'? 'Completed' : 'Not Started';
                 $uparams = array(
                     "stat" => $status,
                     "id" => $todoId,
@@ -136,7 +130,6 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == 'SUCCESS') 
                 );
                 $res = executeQuery($usql, $uparams, "NONE");
                 if ($res) {
-                    setcookie('RecentlyCompletedTodo', $title, time() + 86400, "/");
                     $response = array(
                         "status" => "Success",
                         "message" => TODO_STATUS_UPDATE_SUCCESS_MSG
