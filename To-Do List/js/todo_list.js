@@ -10,7 +10,7 @@ var reg_email_err = false;
 function sanitizeHTML(text) {
     return $('<div>').text(text).html();
 }
-
+ 
 
 /**
  * @param {String} togId - the element id of the eye icon on which the user clicks

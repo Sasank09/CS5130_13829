@@ -34,7 +34,7 @@ if (!(isset($_SESSION['user_mail']) && !empty($_SESSION['user_mail']) && isset($
                             if ($_SESSION['login_status'] === 'SUCCESS') {
                                 $todo  = array();
                                 getFormContent($todo);
-                            ?>
+                            ?> 
                                 <div class="bg-light mt-4 clearfix">
                                     <a href="all_todos.php" id="cancel" name="cancel" class="btn btn-secondary">Cancel</a>
                                     <input type="reset" class="btn btn-danger" value="Reset">

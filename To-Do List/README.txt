@@ -1,6 +1,6 @@
 #Please make sure all the folders and files are in the directory "To-Do List" if not create one and place the files and folders in it
 
-# Database user should be created with the following credentials and should be granted with all the priviliged access to the database
+# Database user should be created with the following credentials and should be granted with all the priviliged access to the database or replace credentials of your in pdo.php filr
 username : php
 password : phpdb
 

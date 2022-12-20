@@ -31,7 +31,8 @@ CREATE TABLE users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Test user as sample record in user table
-INSERT INTO users (fullname, email, password) VALUES ('Tester', 'test@mail.com', '$2y$10$xoPSFxLw8rvR5FgGxRHU/.RykNLs30bjQV8hlNVd9jVx0SeUrkKwC');
+INSERT INTO users (fullname, email, password) VALUES ('Tester', 'test@mail.com', '$2y$10$xoPSFxLw8rvR5FgGxRHU/.RykNLs30bjQV8hlNVd9jVx0SeUrkKwC'),
+('Chandu', 'chandu@ucmo.edu', '$2y$10$xoPSFxLw8rvR5FgGxRHU/.RykNLs30bjQV8hlNVd9jVx0SeUrkKwC');
 
 
 -- Table structure for table todos

@@ -180,7 +180,7 @@ if (isset($_SESSION['login_status']) && $_SESSION['login_status'] === 'FAIL') {
                     <h3 class="w3-center">Development Team</h3><br>
                     <h4 class="w3-center">Advanced Web Applications & Services Development</h4>
                     <hr>
-
+ 
                     <h4>Professor: Dr. Sung</h4>
                     <p class="w3-text-dark-grey">CS5130 - CRN 13892</p><br>
 
